@@ -968,36 +968,29 @@ function spawnConfetti(){
 /* 分數閃爍 */
 function flashScore(id,val){const el=document.getElementById(id);if(!el)return;el.textContent=val;el.classList.remove('score-flash');void el.offsetWidth;el.classList.add('score-flash');}
 
-/* Firebase */
-const _fbScript=document.createElement('script');
-_fbScript.type='module';
-_fbScript.textContent=`
-  import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import{getDatabase,ref,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-  const app=initializeApp({apiKey:"AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA",authDomain:"classroom-helper-88f09.firebaseapp.com",databaseURL:"https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"classroom-helper-88f09",storageBucket:"classroom-helper-88f09.firebasestorage.app",messagingSenderId:"679142147221",appId:"1:679142147221:web:a8b4ed5c26fe1b8b23479c"});
-  const db=getDatabase(app);
-  window._fbDb=db;window._fbRef=ref;window._fbSet=set;window._fbReady=true;
-  // c1 獨立；c2 和 c3 共用固定分組（都讀 c2 的）
-  ['c1','c2'].forEach(ck=>{
-    onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el2=document.getElementById('fg-score-'+ck+'-'+i);if(el2)el2.textContent=d[i].score;const el3=document.getElementById('fg-score-c3-'+i);if(el3)el3.textContent=d[i].score;}});if(window.currentClass===ck||window.currentClass==='c3')window.updateLeaderBar(window.currentClass);});
-  });
-  ['c1','c2','c3'].forEach(ck=>{
-    onValue(ref(db,ck+'/students'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});});
-    onValue(ref(db,ck+'/topicList'),snap=>{if(snap.val())window.loadTopicsFromFirebase(ck, snap.val());});
-  });
-  console.log('✅ Firebase 連線成功！');
-`;
-document.head.appendChild(_fbScript);
-
 function saveGroupScore(ck,idx,score){
-  if(!window._fbReady)return;
-  // c2 和 c3 共用分組，永遠存到 c2
+  if(!window._fbDb)return;
   const saveKey=(ck==='c3')?'c2':ck;
   window._fbSet(window._fbRef(window._fbDb,saveKey+'/fixedGroups/'+idx+'/score'),score);
 }
-function saveStudentScore(ck,idx,score){if(!window._fbReady)return;window._fbSet(window._fbRef(window._fbDb,ck+'/students/'+idx+'/score'),score);}
+function saveStudentScore(ck,idx,score){
+  if(!window._fbDb)return;
+  window._fbSet(window._fbRef(window._fbDb,ck+'/students/'+idx+'/score'),score);
+}
+function saveTopics(ck){
+  if(!window._fbDb)return;
+  window._fbSet(window._fbRef(window._fbDb,ck+'/topicList'), CLASS_DATA[ck].topics.join('||'));
+}
+function loadTopicsFromFirebase(ck,data){
+  if(!data)return;
+  const arr=data.split('||').filter(t=>t.trim()!=='');
+  if(arr.length>0){CLASS_DATA[ck].topics=arr;if(currentClass===ck)renderTopicSelect();}
+}
+function loadTopics(ck){}
+window.loadTopicsFromFirebase=loadTopicsFromFirebase;
+window.updateLeaderBar=function(ck){if(currentClass===ck)updateLeaderBar();};
+window.currentClass=null;
 
-/* 7. Firebase 安全規則提示（已在背景設定，這裡只是說明） */
 function resetAllScores(){
   if(!confirm('確定要清除所有班級的分數嗎？\n此操作無法復原。'))return;
   ['c1','c2','c3'].forEach(ck=>{
@@ -1008,6 +1001,65 @@ function resetAllScores(){
 }
 
 ['timer-min-input','timer-sec-input'].forEach(id=>{document.getElementById(id).addEventListener('input',()=>{if(!timerRunning)syncDisplayFromInputs();});});
+</script>
+
+<!-- Firebase 獨立 module script，解決時序問題 -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({
+  apiKey:"AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA",
+  authDomain:"classroom-helper-88f09.firebaseapp.com",
+  databaseURL:"https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"classroom-helper-88f09",
+  storageBucket:"classroom-helper-88f09.firebasestorage.app",
+  messagingSenderId:"679142147221",
+  appId:"1:679142147221:web:a8b4ed5c26fe1b8b23479c"
+});
+const db=getDatabase(app);
+window._fbDb=db;
+window._fbRef=ref;
+window._fbSet=set;
+
+// 固定分組分數（c2 和 c3 共用）
+['c1','c2'].forEach(ck=>{
+  onValue(ref(db,ck+'/fixedGroups'),snap=>{
+    const d=snap.val();if(!d)return;
+    Object.keys(d).forEach(i=>{
+      if(d[i].score!==undefined){
+        CLASS_DATA[ck].fixedGroups[i].score=d[i].score;
+        const el2=document.getElementById('fg-score-'+ck+'-'+i);
+        if(el2)el2.textContent=d[i].score;
+        const el3=document.getElementById('fg-score-c3-'+i);
+        if(el3)el3.textContent=d[i].score;
+      }
+    });
+    if(window.currentClass===ck||window.currentClass==='c3')window.updateLeaderBar(window.currentClass);
+  });
+});
+
+// 學生個人分數
+['c1','c2','c3'].forEach(ck=>{
+  onValue(ref(db,ck+'/students'),snap=>{
+    const d=snap.val();if(!d)return;
+    Object.keys(d).forEach(i=>{
+      if(d[i].score!==undefined){
+        CLASS_DATA[ck].students[i].score=d[i].score;
+        const el=document.getElementById('stu-score-'+ck+'-'+i);
+        if(el)el.textContent=d[i].score;
+      }
+    });
+  });
+
+  // 課程主題清單
+  onValue(ref(db,ck+'/topicList'),snap=>{
+    const d=snap.val();
+    if(d) window.loadTopicsFromFirebase(ck,d);
+  });
+});
+
+console.log('✅ Firebase 連線成功！');
+</script>
 </script>
 </body>
 </html>
