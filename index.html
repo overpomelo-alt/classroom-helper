@@ -608,9 +608,9 @@ let speakerSpoken=new Set();
 
 /* 頁面切換 */
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goHome(){stopTimer();showPage('home-page');currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
+function goHome(){stopTimer();showPage('home-page');currentClass=null;window.currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
 function enterClass(k){
-  currentClass=k; const d=CLASS_DATA[k];
+  currentClass=k; window.currentClass=k; const d=CLASS_DATA[k];
   document.getElementById('class-page').setAttribute('data-class',k);
   document.getElementById('nav-class-label').textContent=d.name;
   document.getElementById('info-name').textContent=d.name;
@@ -689,6 +689,8 @@ function saveTopics(ck){
   window._fbSet(window._fbRef(window._fbDb, ck+'/topics'), CLASS_DATA[ck].topics);
 }
 window.renderTopicSelect = function(){ if(currentClass) renderTopicSelect(); };
+window.updateLeaderBar = function(){ updateLeaderBar(); };
+window.currentClass = null;
 
 /* 備註/鼓勵語編輯 */
 function editInfoField(field){
