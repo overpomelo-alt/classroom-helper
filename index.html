@@ -655,7 +655,7 @@ function openTopicModal(){
   renderTopicList();
   document.getElementById('topic-modal').classList.add('open');
 }
-function closeTopicModal(){document.getElementById('topic-modal').classList.remove('open');}
+function closeTopicModal(){document.getElementById('topic-modal').classList.remove('open');renderTopicSelect();}
 function handleTopicModalClick(e){if(e.target===document.getElementById('topic-modal'))closeTopicModal();}
 function renderTopicList(){
   const d=CLASS_DATA[currentClass];
