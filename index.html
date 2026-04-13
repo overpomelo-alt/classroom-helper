@@ -690,25 +690,22 @@ function deleteTopic(idx){
 }
 function saveTopics(ck){
   if(!window._fbReady) return;
-  // Firebase 用物件格式存陣列：{t0:'主題1', t1:'主題2', ...}
-  const obj={};
-  CLASS_DATA[ck].topics.forEach((t,i)=>{ obj['t'+i]=t; });
-  obj['_count']=CLASS_DATA[ck].topics.length;
-  window._fbSet(window._fbRef(window._fbDb, ck+'/topics'), obj);
+  // 最簡單：每個主題存成獨立的節點
+  const updates={};
+  CLASS_DATA[ck].topics.forEach((t,i)=>{ updates[i]=t; });
+  // 先清空再寫入
+  window._fbSet(window._fbRef(window._fbDb, ck+'/topicList'), CLASS_DATA[ck].topics.join('||'));
 }
 function loadTopicsFromFirebase(ck, data){
   if(!data) return;
-  const count=data['_count']||0;
-  const arr=[];
-  for(let i=0;i<count;i++){
-    if(data['t'+i]!==undefined) arr.push(data['t'+i]);
-  }
+  // 讀取字串格式
+  const arr = data.split('||').filter(t=>t.trim()!=='');
   if(arr.length>0){
     CLASS_DATA[ck].topics=arr;
     if(window.currentClass===ck) renderTopicSelect();
   }
 }
-function loadTopics(ck){} // 保留空函式避免錯誤
+function loadTopics(ck){}
 window.loadTopicsFromFirebase = loadTopicsFromFirebase;
 
 window.renderTopicSelect = function(ck){ if(currentClass===ck) renderTopicSelect(); };
@@ -986,7 +983,7 @@ _fbScript.textContent=`
   });
   ['c1','c2','c3'].forEach(ck=>{
     onValue(ref(db,ck+'/students'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});});
-    onValue(ref(db,ck+'/topics'),snap=>{window.loadTopicsFromFirebase(ck, snap.val());});
+    onValue(ref(db,ck+'/topicList'),snap=>{if(snap.val())window.loadTopicsFromFirebase(ck, snap.val());});
   });
   console.log('✅ Firebase 連線成功！');
 `;
