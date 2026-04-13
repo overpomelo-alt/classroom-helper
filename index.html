@@ -689,11 +689,11 @@ function deleteTopic(idx){
   saveTopics(currentClass);
 }
 function saveTopics(ck){
-  if(!window._fbReady) return;
-  // 最簡單：每個主題存成獨立的節點
-  const updates={};
-  CLASS_DATA[ck].topics.forEach((t,i)=>{ updates[i]=t; });
-  // 先清空再寫入
+  if(!window._fbReady){
+    // Firebase 還沒準備好，等 500ms 再試
+    setTimeout(()=>saveTopics(ck), 500);
+    return;
+  }
   window._fbSet(window._fbRef(window._fbDb, ck+'/topicList'), CLASS_DATA[ck].topics.join('||'));
 }
 function loadTopicsFromFirebase(ck, data){
