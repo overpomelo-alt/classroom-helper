@@ -601,6 +601,9 @@ const CLASS_DATA = {
   }
 };
 
+// 四年甲班社會與自然共用同一份固定分組（分數同步）
+CLASS_DATA.c3.fixedGroups = CLASS_DATA.c2.fixedGroups;
+
 /* 狀態 */
 let currentClass=null, randomGroupN=2, randomGroups=[], randomGroupScores=[], randomGroupNames=[];
 let timerInterval=null, timerRemaining=300, timerRunning=false, timerTotal=300;
@@ -611,6 +614,7 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function goHome(){stopTimer();showPage('home-page');currentClass=null;window.currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
 function enterClass(k){
   currentClass=k; window.currentClass=k; const d=CLASS_DATA[k];
+  loadTopics(k);  // 從 localStorage 載入主題
   document.getElementById('class-page').setAttribute('data-class',k);
   document.getElementById('nav-class-label').textContent=d.name;
   document.getElementById('info-name').textContent=d.name;
@@ -685,9 +689,14 @@ function deleteTopic(idx){
   saveTopics(currentClass);
 }
 function saveTopics(ck){
-  if(!window._fbReady) return;
-  // 存成 JSON 字串避免 Firebase 陣列格式問題
-  window._fbSet(window._fbRef(window._fbDb, ck+'/topicsJson'), JSON.stringify(CLASS_DATA[ck].topics));
+  // 用 localStorage 儲存主題，最穩定
+  try{ localStorage.setItem('topics_'+ck, JSON.stringify(CLASS_DATA[ck].topics)); }catch(e){}
+}
+function loadTopics(ck){
+  try{
+    const saved=localStorage.getItem('topics_'+ck);
+    if(saved){ const arr=JSON.parse(saved); if(Array.isArray(arr)&&arr.length>0) CLASS_DATA[ck].topics=arr; }
+  }catch(e){}
 }
 window.renderTopicSelect = function(ck){ if(currentClass===ck) renderTopicSelect(); };
 window.updateLeaderBar = function(ck){ if(currentClass===ck) updateLeaderBar(); };
@@ -958,16 +967,23 @@ _fbScript.textContent=`
   const app=initializeApp({apiKey:"AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA",authDomain:"classroom-helper-88f09.firebaseapp.com",databaseURL:"https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"classroom-helper-88f09",storageBucket:"classroom-helper-88f09.firebasestorage.app",messagingSenderId:"679142147221",appId:"1:679142147221:web:a8b4ed5c26fe1b8b23479c"});
   const db=getDatabase(app);
   window._fbDb=db;window._fbRef=ref;window._fbSet=set;window._fbReady=true;
+  // c1 獨立；c2 和 c3 共用固定分組（都讀 c2 的）
+  ['c1','c2'].forEach(ck=>{
+    onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el2=document.getElementById('fg-score-'+ck+'-'+i);if(el2)el2.textContent=d[i].score;const el3=document.getElementById('fg-score-c3-'+i);if(el3)el3.textContent=d[i].score;}});if(window.currentClass===ck||window.currentClass==='c3')window.updateLeaderBar(window.currentClass);});
+  });
   ['c1','c2','c3'].forEach(ck=>{
-    onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el=document.getElementById('fg-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});if(window.currentClass===ck)window.updateLeaderBar(ck);});
     onValue(ref(db,ck+'/students'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});});
-    onValue(ref(db,ck+'/topicsJson'),snap=>{const d=snap.val();if(!d)return;try{const arr=JSON.parse(d);if(Array.isArray(arr)){CLASS_DATA[ck].topics=arr;if(window.currentClass===ck)window.renderTopicSelect(ck);}}catch(e){}});
   });
   console.log('✅ Firebase 連線成功！');
 `;
 document.head.appendChild(_fbScript);
 
-function saveGroupScore(ck,idx,score){if(!window._fbReady)return;window._fbSet(window._fbRef(window._fbDb,ck+'/fixedGroups/'+idx+'/score'),score);}
+function saveGroupScore(ck,idx,score){
+  if(!window._fbReady)return;
+  // c2 和 c3 共用分組，永遠存到 c2
+  const saveKey=(ck==='c3')?'c2':ck;
+  window._fbSet(window._fbRef(window._fbDb,saveKey+'/fixedGroups/'+idx+'/score'),score);
+}
 function saveStudentScore(ck,idx,score){if(!window._fbReady)return;window._fbSet(window._fbRef(window._fbDb,ck+'/students/'+idx+'/score'),score);}
 
 /* 7. Firebase 安全規則提示（已在背景設定，這裡只是說明） */
