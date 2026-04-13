@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>課堂小幫手 🌱</title>
+<style>
+:root {
+  --font-main: 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+  --home-bg: #fdf8f2;
+  --c1-primary:#e8956d;--c1-light:#fff4ee;--c1-mid:#fde8d8;--c1-dark:#c4633a;--c1-tag:#f5c4a0;
+  --c2-primary:#72b582;--c2-light:#f0f9f2;--c2-mid:#d6f0dc;--c2-dark:#4a8a5a;--c2-tag:#b4dfc0;
+  --c3-primary:#5da8c4;--c3-light:#eef7fb;--c3-mid:#c8e8f4;--c3-dark:#3a7d98;--c3-tag:#9fd0e4;
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:0 8px 32px rgba(0,0,0,0.12);
+  --radius-sm:10px;--radius-md:16px;--radius-lg:24px;--radius-xl:32px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-main);background:var(--home-bg);min-height:100vh;color:#3a3028;line-height:1.6;}
+.hidden{display:none!important;}
+button{cursor:pointer;border:none;font-family:var(--font-main);transition:all 0.15s ease;}
+button:hover{transform:translateY(-1px);}
+button:active{transform:translateY(0) scale(0.98);}
+input,select,textarea{font-family:var(--font-main);}
+.section-title{font-size:1.1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card{background:white;border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-sm);}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ===== 首頁 ===== */
+#home-page{min-height:100vh;background:linear-gradient(160deg,#fdf8f2 0%,#fef0e4 50%,#f8f4f0 100%);padding:40px 20px;}
+.home-header{text-align:center;margin-bottom:48px;}
+.home-header .logo-emoji{font-size:3.5rem;display:block;margin-bottom:12px;animation:floatEmoji 3s ease-in-out infinite;}
+@keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.home-header h1{font-size:2.2rem;font-weight:800;color:#5a3e2b;letter-spacing:2px;margin-bottom:8px;}
+.home-header p{color:#9a7d6a;font-size:1rem;}
+.home-cards-grid{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto;}
+.home-class-card{background:white;border-radius:var(--radius-xl);padding:36px 32px;text-align:center;box-shadow:var(--shadow-md);cursor:pointer;transition:all 0.25s ease;width:260px;position:relative;overflow:hidden;}
+.home-class-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;border-radius:var(--radius-xl) var(--radius-xl) 0 0;}
+.home-class-card.c1::before{background:var(--c1-primary);}
+.home-class-card.c2::before{background:var(--c2-primary);}
+.home-class-card.c3::before{background:var(--c3-primary);}
+.home-class-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.home-class-card .card-emoji{font-size:3rem;margin-bottom:14px;display:block;}
+.home-class-card .card-name{font-size:1.4rem;font-weight:800;margin-bottom:8px;color:#3a3028;}
+.home-class-card .card-desc{font-size:0.85rem;color:#8a7060;margin-bottom:24px;}
+.home-class-card .enter-btn{padding:10px 28px;border-radius:50px;font-weight:700;font-size:0.95rem;color:white;box-shadow:0 3px 10px rgba(0,0,0,0.15);}
+.home-class-card.c1 .enter-btn{background:var(--c1-primary);}
+.home-class-card.c2 .enter-btn{background:var(--c2-primary);}
+.home-class-card.c3 .enter-btn{background:var(--c3-primary);}
+.home-footer{text-align:center;margin-top:60px;color:#bba898;font-size:0.85rem;}
+
+/* ===== 班級頁面 ===== */
+#class-page{min-height:100vh;}
+.topnav{padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100;background:white;}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.back-btn{background:#f5f0eb;color:#5a4a3a;border-radius:50px;padding:7px 16px;font-size:0.9rem;font-weight:600;}
+.back-btn:hover{background:#ede5de;}
+.nav-class-label{font-size:1rem;font-weight:700;color:#3a3028;}
+.nav-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.nav-tab{padding:7px 14px;border-radius:50px;font-size:0.85rem;font-weight:600;background:transparent;color:#8a7060;transition:all 0.2s;}
+.nav-tab:hover{background:#f5f0eb;color:#5a4a3a;}
+.nav-tab.active{color:white;}
+.class-content{max-width:1200px;margin:0 auto;padding:28px 24px 80px;}
+
+/* 班級資訊頂部 */
+.class-header-bar{border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;position:relative;overflow:hidden;}
+.class-header-bar::after{content:attr(data-emoji);position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.15;pointer-events:none;}
+.class-info-item{flex:1;min-width:180px;}
+.class-info-item label{font-size:0.75rem;font-weight:700;letter-spacing:1px;opacity:0.6;display:block;margin-bottom:4px;}
+.class-info-item .value{font-size:1rem;font-weight:600;cursor:pointer;border-bottom:2px dashed transparent;transition:border-color 0.2s;display:inline-block;min-width:60px;}
+.class-info-item .value:hover{border-bottom-color:#ccc;}
+.class-info-item .value-hint{font-size:0.72rem;color:#bbb;margin-top:2px;}
+.info-edit-input{font-size:0.95rem;font-weight:600;border:2px solid #aaa;border-radius:8px;padding:4px 10px;outline:none;width:100%;font-family:var(--font-main);background:#fffbe8;}
+.encourage-tag{display:inline-block;padding:6px 16px;border-radius:50px;font-size:0.9rem;font-weight:700;margin-top:8px;cursor:pointer;border-bottom:2px dashed transparent;transition:border-color 0.2s;}
+.encourage-tag:hover{border-bottom-color:rgba(0,0,0,0.2);}
+
+/* 教材 */
+.publisher-grid{display:flex;gap:14px;flex-wrap:wrap;}
+.publisher-btn{flex:1;min-width:120px;padding:18px 16px;border-radius:var(--radius-md);font-size:1rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all 0.2s;}
+.publisher-btn:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.publisher-btn .pub-emoji{font-size:1.8rem;}
+
+/* Tab 切換 */
+.tab-switcher{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.tab-switch-btn{padding:9px 22px;border-radius:50px;font-size:0.92rem;font-weight:600;background:#f0ebe5;color:#7a6a5a;}
+.tab-switch-btn.active{color:white;}
+.tab-switch-btn:hover:not(.active){background:#e5dfd8;}
+
+/* 分組卡片 */
+.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
+.group-card{border-radius:var(--radius-md);padding:18px;box-shadow:var(--shadow-sm);background:white;transition:box-shadow 0.2s;}
+.group-card:hover{box-shadow:var(--shadow-md);}
+.group-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.group-name{font-size:1.05rem;font-weight:800;cursor:pointer;border-bottom:2px dashed transparent;transition:border-color 0.2s;}
+.group-name:hover{border-bottom-color:#ccc;}
+.group-name-input{font-size:1.05rem;font-weight:800;border:2px solid #aaa;border-radius:8px;padding:2px 8px;outline:none;width:100%;font-family:var(--font-main);background:#fffbe8;}
+.group-score-display{font-size:1.6rem;font-weight:800;text-align:center;margin:8px 0;}
+.group-members{font-size:0.82rem;color:#8a7a6a;margin-bottom:14px;line-height:1.8;}
+.score-btns{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.score-btn{border-radius:8px;padding:6px 10px;font-size:0.82rem;font-weight:700;min-width:40px;}
+.score-btn.plus{background:#e8f5e9;color:#2e7d32;}
+.score-btn.minus{background:#fce4ec;color:#c62828;}
+.score-btn.plus:hover{background:#c8e6c9;}
+.score-btn.minus:hover{background:#f8bbd0;}
+.rank-bar{border-radius:var(--radius-md);padding:14px 20px;margin-bottom:18px;font-size:0.9rem;font-weight:600;display:flex;align-items:center;gap:10px;}
+
+/* 分組管理工具列 */
+.group-mgmt-bar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.group-mgmt-btn{border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:600;background:#f0ebe5;color:#5a4a3a;}
+.group-mgmt-btn:hover{background:#e5dfd8;}
+.group-mgmt-btn.danger{background:#fce4ec;color:#c62828;}
+.group-mgmt-btn.danger:hover{background:#f8bbd0;}
+
+/* 隨機分組 */
+.random-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.n-btn{border-radius:50px;padding:8px 20px;font-size:0.9rem;font-weight:600;background:#f0ebe5;color:#5a4a3a;}
+.n-btn.selected{color:white;}
+.n-btn:hover:not(.selected){background:#e5dfd8;}
+.random-go-btn{border-radius:50px;padding:10px 28px;font-size:1rem;font-weight:800;color:white;box-shadow:var(--shadow-sm);}
+.random-go-btn:hover{box-shadow:var(--shadow-md);}
+
+/* 學生列表 */
+.students-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.student-card{background:white;border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);text-align:center;transition:box-shadow 0.2s;position:relative;}
+.student-card:hover{box-shadow:var(--shadow-md);}
+.student-name{font-size:1rem;font-weight:700;margin-bottom:4px;cursor:pointer;border-bottom:2px dashed transparent;transition:border-color 0.2s;display:inline-block;}
+.student-name:hover{border-bottom-color:#ccc;}
+.student-name-input{font-size:1rem;font-weight:700;border:2px solid #aaa;border-radius:8px;padding:2px 8px;text-align:center;width:100%;font-family:var(--font-main);background:#fffbe8;outline:none;}
+/* 組別下拉選單：看起來像標籤，點擊可換組 */
+.student-group-select{font-size:0.78rem;padding:4px 12px;border-radius:50px;margin-bottom:10px;font-weight:700;border:2px solid transparent;background:#f0ebe5;color:#5a4a3a;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;}
+.student-group-select:hover{filter:brightness(0.94);}
+[data-class="c1"] .student-group-select{background:var(--c1-tag);color:var(--c1-dark);border-color:var(--c1-primary);}
+[data-class="c2"] .student-group-select{background:var(--c2-tag);color:var(--c2-dark);border-color:var(--c2-primary);}
+[data-class="c3"] .student-group-select{background:var(--c3-tag);color:var(--c3-dark);border-color:var(--c3-primary);}
+.student-group-tag{font-size:0.75rem;padding:2px 10px;border-radius:50px;display:inline-block;margin-bottom:10px;font-weight:600;}
+.student-score{font-size:1.8rem;font-weight:800;margin-bottom:10px;}
+.student-score-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.student-score-btn{border-radius:8px;padding:5px 9px;font-size:0.8rem;font-weight:700;min-width:36px;}
+.delete-student-btn{position:absolute;top:8px;right:8px;background:#fce4ec;color:#c62828;border-radius:50%;width:24px;height:24px;font-size:0.8rem;display:flex;align-items:center;justify-content:center;padding:0;opacity:0;transition:opacity 0.2s;}
+.student-card:hover .delete-student-btn{opacity:1;}
+.add-student-form{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px;padding:16px;background:#fafafa;border-radius:var(--radius-md);border:2px dashed #ddd;}
+.add-student-form input,.add-student-form select{padding:8px 14px;border-radius:50px;border:2px solid #e0d8d0;font-size:0.9rem;outline:none;background:white;}
+.add-student-form input:focus,.add-student-form select:focus{border-color:#aaa;}
+.add-btn{border-radius:50px;padding:8px 22px;font-size:0.9rem;font-weight:700;color:white;}
+
+/* 今日提醒 */
+.reminder-list{display:flex;flex-direction:column;gap:10px;}
+.reminder-item{display:flex;align-items:center;gap:10px;padding:12px 16px;background:white;border-radius:var(--radius-sm);font-size:0.9rem;box-shadow:var(--shadow-sm);}
+
+/* ===== 倒數計時器 ===== */
+.timer-overlay{display:none;position:fixed;inset:0;background:rgba(40,30,20,0.55);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.timer-overlay.open{display:flex;}
+.timer-modal{background:white;border-radius:var(--radius-xl);padding:40px 48px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.25);min-width:340px;position:relative;animation:popIn 0.25s ease;}
+.timer-close-btn{position:absolute;top:16px;right:20px;background:#f0ebe5;border-radius:50%;width:36px;height:36px;font-size:1.1rem;display:flex;align-items:center;justify-content:center;padding:0;color:#7a6a5a;}
+.timer-title{font-size:1rem;font-weight:700;color:#7a6a5a;margin-bottom:6px;}
+.timer-display{font-size:5.5rem;font-weight:900;letter-spacing:4px;margin:16px 0;line-height:1;transition:color 0.3s;font-variant-numeric:tabular-nums;}
+.timer-display.warning{color:#e8956d!important;animation:pulse 0.8s ease-in-out infinite;}
+.timer-display.danger{color:#e05050!important;animation:pulse 0.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.timer-presets{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.timer-preset-btn{border-radius:50px;padding:6px 16px;font-size:0.85rem;font-weight:600;background:#f0ebe5;color:#5a4a3a;}
+.timer-preset-btn:hover{background:#e5dfd8;}
+.timer-custom{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:24px;}
+.timer-custom label{font-size:0.85rem;color:#7a6a5a;font-weight:600;}
+.timer-custom input{width:64px;padding:6px 10px;border-radius:10px;border:2px solid #e0d8d0;font-size:1rem;text-align:center;font-weight:700;outline:none;}
+.timer-custom input:focus{border-color:#aaa;}
+.timer-controls{display:flex;gap:12px;justify-content:center;}
+.timer-start-btn{border-radius:50px;padding:12px 36px;font-size:1.1rem;font-weight:800;color:white;box-shadow:var(--shadow-md);min-width:120px;}
+.timer-reset-btn{border-radius:50px;padding:12px 24px;font-size:1rem;font-weight:700;background:#f0ebe5;color:#5a4a3a;}
+.timer-reset-btn:hover{background:#e5dfd8;}
+.timer-fab{position:fixed;bottom:28px;right:28px;z-index:150;width:60px;height:60px;border-radius:50%;font-size:1.6rem;color:white;box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;}
+.timer-fab:hover{transform:scale(1.1) translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,0.18);}
+.timer-fab.hidden{display:none!important;}
+
+/* 計時完成慶祝彈出 */
+.timer-done-overlay{display:none;position:fixed;inset:0;z-index:300;align-items:center;justify-content:center;pointer-events:none;}
+.timer-done-overlay.show{display:flex;}
+.timer-done-box{background:white;border-radius:var(--radius-xl);padding:48px 60px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.22);animation:celebPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;pointer-events:all;}
+.timer-done-emoji{font-size:5rem;display:block;margin-bottom:12px;animation:celebBounce 0.6s ease infinite alternate;}
+.timer-done-title{font-size:2rem;font-weight:900;color:#5a3e2b;margin-bottom:8px;}
+.timer-done-sub{font-size:1rem;color:#9a7d6a;margin-bottom:28px;}
+.timer-done-close{border-radius:50px;padding:12px 40px;font-size:1.1rem;font-weight:800;color:white;}
+@keyframes celebPop{0%{transform:scale(0.5) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(0deg);opacity:1}}
+@keyframes celebBounce{0%{transform:translateY(0) rotate(-5deg)}100%{transform:translateY(-12px) rotate(5deg)}}
+
+/* 彩帶粒子 */
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:299;overflow:hidden;}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-20px;border-radius:2px;animation:confettiFall linear forwards;}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* ===== 班級主色套用 ===== */
+[data-class="c1"] #class-page{background:var(--c1-light);}
+[data-class="c1"] .topnav{border-bottom:3px solid var(--c1-tag);}
+[data-class="c1"] .nav-tab.active,[data-class="c1"] .tab-switch-btn.active,[data-class="c1"] .n-btn.selected,[data-class="c1"] .random-go-btn,[data-class="c1"] .add-btn,[data-class="c1"] .timer-start-btn,[data-class="c1"] .timer-fab,[data-class="c1"] .timer-done-close{background:var(--c1-primary);}
+[data-class="c1"] .class-header-bar{background:var(--c1-mid);}
+[data-class="c1"] .encourage-tag{background:var(--c1-tag);color:var(--c1-dark);}
+[data-class="c1"] .group-score-display{color:var(--c1-primary);}
+[data-class="c1"] .student-score{color:var(--c1-primary);}
+[data-class="c1"] .rank-bar{background:var(--c1-mid);color:var(--c1-dark);}
+[data-class="c1"] .group-card{border-top:3px solid var(--c1-primary);}
+[data-class="c1"] .publisher-btn{background:var(--c1-light);color:var(--c1-dark);}
+[data-class="c1"] .student-group-tag{background:var(--c1-tag);color:var(--c1-dark);}
+[data-class="c1"] .timer-display{color:var(--c1-primary);}
+
+[data-class="c2"] #class-page{background:var(--c2-light);}
+[data-class="c2"] .topnav{border-bottom:3px solid var(--c2-tag);}
+[data-class="c2"] .nav-tab.active,[data-class="c2"] .tab-switch-btn.active,[data-class="c2"] .n-btn.selected,[data-class="c2"] .random-go-btn,[data-class="c2"] .add-btn,[data-class="c2"] .timer-start-btn,[data-class="c2"] .timer-fab,[data-class="c2"] .timer-done-close{background:var(--c2-primary);}
+[data-class="c2"] .class-header-bar{background:var(--c2-mid);}
+[data-class="c2"] .encourage-tag{background:var(--c2-tag);color:var(--c2-dark);}
+[data-class="c2"] .group-score-display{color:var(--c2-primary);}
+[data-class="c2"] .student-score{color:var(--c2-primary);}
+[data-class="c2"] .rank-bar{background:var(--c2-mid);color:var(--c2-dark);}
+[data-class="c2"] .group-card{border-top:3px solid var(--c2-primary);}
+[data-class="c2"] .publisher-btn{background:var(--c2-light);color:var(--c2-dark);}
+[data-class="c2"] .student-group-tag{background:var(--c2-tag);color:var(--c2-dark);}
+[data-class="c2"] .timer-display{color:var(--c2-primary);}
+
+[data-class="c3"] #class-page{background:var(--c3-light);}
+[data-class="c3"] .topnav{border-bottom:3px solid var(--c3-tag);}
+[data-class="c3"] .nav-tab.active,[data-class="c3"] .tab-switch-btn.active,[data-class="c3"] .n-btn.selected,[data-class="c3"] .random-go-btn,[data-class="c3"] .add-btn,[data-class="c3"] .timer-start-btn,[data-class="c3"] .timer-fab,[data-class="c3"] .timer-done-close{background:var(--c3-primary);}
+[data-class="c3"] .class-header-bar{background:var(--c3-mid);}
+[data-class="c3"] .encourage-tag{background:var(--c3-tag);color:var(--c3-dark);}
+[data-class="c3"] .group-score-display{color:var(--c3-primary);}
+[data-class="c3"] .student-score{color:var(--c3-primary);}
+[data-class="c3"] .rank-bar{background:var(--c3-mid);color:var(--c3-dark);}
+[data-class="c3"] .group-card{border-top:3px solid var(--c3-primary);}
+[data-class="c3"] .publisher-btn{background:var(--c3-light);color:var(--c3-dark);}
+[data-class="c3"] .student-group-tag{background:var(--c3-tag);color:var(--c3-dark);}
+[data-class="c3"] .timer-display{color:var(--c3-primary);}
+
+/* 動畫 */
+@keyframes popIn{0%{transform:scale(0.92);opacity:0}100%{transform:scale(1);opacity:1}}
+.pop-in{animation:popIn 0.2s ease forwards;}
+@keyframes scoreFlash{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+.score-flash{animation:scoreFlash 0.25s ease;}
+
+/* 響應式 */
+@media(max-width:700px){
+  .home-cards-grid{flex-direction:column;align-items:center;}
+  .home-class-card{width:100%;max-width:320px;}
+  .nav-tabs{gap:3px;}
+  .nav-tab{padding:6px 9px;font-size:0.78rem;}
+  .groups-grid{grid-template-columns:1fr 1fr;}
+  .students-grid{grid-template-columns:1fr 1fr;}
+  .timer-modal{padding:32px 24px;min-width:unset;width:92vw;}
+  .timer-display{font-size:4rem;}
+  .timer-done-box{padding:36px 28px;}
+  .timer-done-title{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 首頁 ===== -->
+<div id="home-page" class="page active">
+  <div class="home-header">
+    <span class="logo-emoji">🌱</span>
+    <h1>課堂小幫手</h1>
+    <p>老師的好夥伴，讓每一堂課都溫暖又有趣 ✨</p>
+  </div>
+  <div class="home-cards-grid">
+    <div class="home-class-card c1" onclick="enterClass('c1')">
+      <span class="card-emoji">🗺️</span>
+      <div class="card-name">三年甲班社會</div>
+      <div class="card-desc">認識家鄉與社區<br>一起探索生活世界</div>
+      <button class="enter-btn">進入課堂 →</button>
+    </div>
+    <div class="home-class-card c2" onclick="enterClass('c2')">
+      <span class="card-emoji">🌏</span>
+      <div class="card-name">四年甲班社會</div>
+      <div class="card-desc">認識臺灣與地理<br>培養公民意識</div>
+      <button class="enter-btn">進入課堂 →</button>
+    </div>
+    <div class="home-class-card c3" onclick="enterClass('c3')">
+      <span class="card-emoji">🔬</span>
+      <div class="card-name">四年甲班自然</div>
+      <div class="card-desc">探索自然與科學<br>動手做實驗</div>
+      <button class="enter-btn">進入課堂 →</button>
+    </div>
+  </div>
+  <div class="home-footer">今天也是美好的一天 🌸 &nbsp;|&nbsp; 課堂小幫手 v3.0</div>
+</div>
+
+<!-- ===== 班級頁面 ===== -->
+<div id="class-page" class="page">
+  <div class="topnav">
+    <div class="nav-left">
+      <button class="back-btn" onclick="goHome()">← 首頁</button>
+      <span class="nav-class-label" id="nav-class-label"></span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('info',this)">📋 班級資訊</button>
+      <button class="nav-tab" onclick="switchTab('material',this)">📚 教材資源</button>
+      <button class="nav-tab" onclick="switchTab('group',this)">👥 分組管理</button>
+      <button class="nav-tab" onclick="switchTab('student',this)">⭐ 學生分數</button>
+      <button class="nav-tab" onclick="switchTab('reminder',this)">📌 今日提醒</button>
+    </div>
+  </div>
+
+  <div class="class-content">
+
+    <!-- ── 班級資訊 ── -->
+    <div id="tab-info" class="tab-content">
+      <div id="class-header-bar" class="class-header-bar" data-emoji="">
+        <div class="class-info-item">
+          <label>班級 / 科目</label>
+          <div class="value" id="info-name"></div>
+        </div>
+        <div class="class-info-item">
+          <label>今日課程主題 ✏️</label>
+          <div class="value" id="info-topic" title="點擊可編輯" onclick="editInfoField('topic')"></div>
+          <div class="value-hint">點擊文字可直接修改</div>
+        </div>
+        <div class="class-info-item">
+          <label>老師備註 ✏️</label>
+          <div class="value" id="info-note" title="點擊可編輯" onclick="editInfoField('note')"></div>
+          <div class="value-hint">點擊文字可直接修改</div>
+        </div>
+        <div class="class-info-item">
+          <label>今日鼓勵語 ✏️</label>
+          <div class="encourage-tag" id="info-encourage" title="點擊可編輯" onclick="editInfoField('encourage')"></div>
+          <div class="value-hint" style="margin-top:6px;">點擊文字可直接修改</div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <span style="font-weight:700;color:#7a6a5a;">快速前往：</span>
+        <button class="tab-switch-btn" onclick="switchTab('group',getNavTab(3))">👥 分組管理</button>
+        <button class="tab-switch-btn" onclick="switchTab('student',getNavTab(4))">⭐ 學生分數</button>
+        <button class="tab-switch-btn" onclick="openTimer()">⏱️ 倒數計時器</button>
+        <button class="tab-switch-btn" style="background:#fce4ec;color:#c62828;" onclick="resetAllScores()">🗑️ 清除所有分數</button>
+      </div>
+    </div>
+
+    <!-- ── 教材資源 ── -->
+    <div id="tab-material" class="tab-content hidden">
+      <div class="card">
+        <div class="section-title">📚 教材出版社連結</div>
+        <div class="publisher-grid">
+          <button class="publisher-btn" onclick="openPublisher('hanlin')">
+            <span class="pub-emoji">📗</span><span>翰林</span><span style="font-size:0.75rem;opacity:0.7;">點擊前往</span>
+          </button>
+          <button class="publisher-btn" onclick="openPublisher('kangxuan')">
+            <span class="pub-emoji">📘</span><span>康軒</span><span style="font-size:0.75rem;opacity:0.7;">點擊前往</span>
+          </button>
+          <button class="publisher-btn" onclick="openPublisher('nanyi')">
+            <span class="pub-emoji">📙</span><span>南一</span><span style="font-size:0.75rem;opacity:0.7;">點擊前往</span>
+          </button>
+        </div>
+        <p style="margin-top:18px;font-size:0.82rem;color:#aaa;">※ 目前為示意連結，可日後替換為各出版社真實網址</p>
+      </div>
+    </div>
+
+    <!-- ── 分組管理 ── -->
+    <div id="tab-group" class="tab-content hidden">
+      <div class="tab-switcher">
+        <button class="tab-switch-btn active" id="fixed-tab-btn" onclick="switchGroupMode('fixed',this)">📌 固定分組</button>
+        <button class="tab-switch-btn" id="random-tab-btn" onclick="switchGroupMode('random',this)">🎲 隨機分組</button>
+      </div>
+
+      <!-- 固定分組 -->
+      <div id="fixed-group-area">
+        <div id="fixed-rank-bar" class="rank-bar">🏆 目前領先：<span id="rank-leader"></span></div>
+        <!-- 固定分組工具列 -->
+        <div class="group-mgmt-bar">
+          <span style="font-size:0.88rem;font-weight:600;color:#8a7a6a;">管理分組：</span>
+          <button class="group-mgmt-btn" onclick="addFixedGroup()">➕ 新增一組</button>
+          <button class="group-mgmt-btn danger" id="del-group-btn" onclick="deleteLastFixedGroup()">🗑️ 刪除最後一組</button>
+          <span id="group-count-hint" style="font-size:0.8rem;color:#aaa;"></span>
+        </div>
+        <div class="groups-grid" id="fixed-groups-container"></div>
+      </div>
+
+      <!-- 隨機分組 -->
+      <div id="random-group-area" class="hidden">
+        <div class="card" style="margin-bottom:20px;">
+          <div class="section-title">🎲 隨機分組設定</div>
+          <div class="random-controls">
+            <span style="font-weight:600;color:#7a6a5a;">分成：</span>
+            <button class="n-btn selected" id="n-btn-2" onclick="selectN(2,this)">2 組</button>
+            <button class="n-btn" id="n-btn-3" onclick="selectN(3,this)">3 組</button>
+            <button class="n-btn" id="n-btn-4" onclick="selectN(4,this)">4 組</button>
+            <button class="random-go-btn" onclick="doRandomGroup()">🎲 立即隨機分組！</button>
+          </div>
+        </div>
+        <div class="groups-grid" id="random-groups-container"></div>
+      </div>
+    </div>
+
+    <!-- ── 學生分數 ── -->
+    <div id="tab-student" class="tab-content hidden">
+      <div class="students-header">
+        <span class="section-title" style="margin-bottom:0">⭐ 學生個人分數</span>
+        <span id="student-count-label" style="font-size:0.88rem;color:#9a8a7a;font-weight:600;"></span>
+      </div>
+      <div class="students-grid" id="students-container"></div>
+      <div class="add-student-form">
+        <span style="font-weight:700;color:#7a6a5a;white-space:nowrap;">➕ 新增學生：</span>
+        <input type="text" id="new-student-name" placeholder="學生姓名" maxlength="10" style="width:140px;">
+        <select id="new-student-group"></select>
+        <button class="add-btn" onclick="addStudent()">新增</button>
+      </div>
+    </div>
+
+    <!-- ── 今日提醒 ── -->
+    <div id="tab-reminder" class="tab-content hidden">
+      <div class="card">
+        <div class="section-title">📌 今日課堂小提醒</div>
+        <div class="reminder-list" id="reminder-list"></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /class-page -->
+
+<!-- 計時器 FAB -->
+<button class="timer-fab hidden" id="timer-fab" onclick="openTimer()">⏱️</button>
+
+<!-- 計時器彈窗 -->
+<div class="timer-overlay" id="timer-overlay" onclick="handleOverlayClick(event)">
+  <div class="timer-modal">
+    <button class="timer-close-btn" onclick="closeTimer()">✕</button>
+    <div class="timer-title">⏱️ 倒數計時器</div>
+    <div class="timer-presets">
+      <button class="timer-preset-btn" onclick="setPreset(1)">1 分鐘</button>
+      <button class="timer-preset-btn" onclick="setPreset(3)">3 分鐘</button>
+      <button class="timer-preset-btn" onclick="setPreset(5)">5 分鐘</button>
+      <button class="timer-preset-btn" onclick="setPreset(10)">10 分鐘</button>
+      <button class="timer-preset-btn" onclick="setPreset(15)">15 分鐘</button>
+    </div>
+    <div class="timer-custom">
+      <label>自訂：</label>
+      <input type="number" id="timer-min-input" min="0" max="99" value="5">
+      <span style="font-weight:700;color:#aaa;">分</span>
+      <input type="number" id="timer-sec-input" min="0" max="59" value="0">
+      <span style="font-weight:700;color:#aaa;">秒</span>
+    </div>
+    <div class="timer-display" id="timer-display">05:00</div>
+    <div class="timer-controls">
+      <button class="timer-start-btn" id="timer-start-btn" onclick="toggleTimer()">▶ 開始</button>
+      <button class="timer-reset-btn" onclick="resetTimer()">↺ 重置</button>
+    </div>
+  </div>
+</div>
+
+<!-- 計時完成彩帶 -->
+<div class="confetti-container" id="confetti-container"></div>
+
+<!-- 計時完成彈窗 -->
+<div class="timer-done-overlay" id="timer-done-overlay">
+  <div class="timer-done-box">
+    <span class="timer-done-emoji" id="timer-done-emoji">🎉</span>
+    <div class="timer-done-title">時間到囉！</div>
+    <div class="timer-done-sub" id="timer-done-sub">做得很棒，大家辛苦了 ✨</div>
+    <button class="timer-done-close" onclick="closeDone()">好的！繼續加油 💪</button>
+  </div>
+</div>
+
+<script>
+/* ===================================================
+   資料定義
+   =================================================== */
+const CLASS_DATA = {
+  c1: {
+    id:'c1', name:'三年甲班社會', emoji:'🗺️',
+    topic:'今日課程主題',
+    note:'老師備註',
+    encourage:'🌟 認真聽課，大家都很棒！',
+    publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
+    reminders:[
+      {icon:'📋',text:'請準備學習單（每人一張）'},
+      {icon:'🗺️',text:'今日需要社區地圖教具'},
+      {icon:'✅',text:'作業收齊後請在名單上打勾'},
+      {icon:'⏰',text:'下課前預留 5 分鐘做分享'},
+    ],
+    fixedGroups:[
+      {name:'全班', score:0, members:['石勁維','詹杰恩','詹禹楊','陳采平','李若妍','黃品葳','白芯宜']},
+    ],
+    students:[
+      {name:'石勁維', group:'全班', score:0},
+      {name:'詹杰恩', group:'全班', score:0},
+      {name:'詹禹楊', group:'全班', score:0},
+      {name:'陳采平', group:'全班', score:0},
+      {name:'李若妍', group:'全班', score:0},
+      {name:'黃品葳', group:'全班', score:0},
+      {name:'白芯宜', group:'全班', score:0},
+    ]
+  },
+  c2: {
+    id:'c2', name:'四年甲班社會', emoji:'🌏',
+    topic:'今日課程主題',
+    note:'老師備註',
+    encourage:'🌿 合作最棒，互相幫忙！',
+    publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
+    reminders:[
+      {icon:'🗺️',text:'需要臺灣地形圖海報'},
+      {icon:'📖',text:'請提醒學生帶課本'},
+      {icon:'✏️',text:'作業今日收'},
+      {icon:'⏰',text:'下課前預留時間複習'},
+    ],
+    fixedGroups:[
+      {name:'A組', score:0, members:['蔡予恩','陳若禾','黃伊浿']},
+      {name:'B組', score:0, members:['黃禹森','都怡安','徐總仟']},
+    ],
+    students:[
+      {name:'蔡予恩', group:'A組', score:0},
+      {name:'陳若禾', group:'A組', score:0},
+      {name:'黃伊浿', group:'A組', score:0},
+      {name:'黃禹森', group:'B組', score:0},
+      {name:'都怡安', group:'B組', score:0},
+      {name:'徐總仟', group:'B組', score:0},
+    ]
+  },
+  c3: {
+    id:'c3', name:'四年甲班自然', emoji:'🔬',
+    topic:'今日課程主題',
+    note:'老師備註',
+    encourage:'🔭 好奇心是科學家最重要的禮物！',
+    publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
+    reminders:[
+      {icon:'🔬',text:'請提前分發實驗器材'},
+      {icon:'📝',text:'實驗記錄單請發給每位學生'},
+      {icon:'✅',text:'作業收齊後請在名單上打勾'},
+      {icon:'⚠️',text:'提醒學生注意實驗安全'},
+    ],
+    fixedGroups:[
+      {name:'A組', score:0, members:['蔡予恩','陳若禾','黃伊浿']},
+      {name:'B組', score:0, members:['黃禹森','都怡安','徐總仟']},
+    ],
+    students:[
+      {name:'蔡予恩', group:'A組', score:0},
+      {name:'陳若禾', group:'A組', score:0},
+      {name:'黃伊浿', group:'A組', score:0},
+      {name:'黃禹森', group:'B組', score:0},
+      {name:'都怡安', group:'B組', score:0},
+      {name:'徐總仟', group:'B組', score:0},
+    ]
+  }
+};
+
+/* ===================================================
+   狀態
+   =================================================== */
+let currentClass = null;
+let randomGroupN = 2;
+let randomGroups = [];
+let randomGroupScores = [];
+let randomGroupNames = [];
+let timerInterval = null;
+let timerRemaining = 300;
+let timerRunning = false;
+let timerTotal = 300;
+
+/* ===================================================
+   頁面切換
+   =================================================== */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goHome(){
+  stopTimer();
+  showPage('home-page');
+  currentClass=null;
+  document.getElementById('class-page').removeAttribute('data-class');
+  document.getElementById('timer-fab').classList.add('hidden');
+}
+function enterClass(classKey){
+  currentClass=classKey;
+  const data=CLASS_DATA[classKey];
+  document.getElementById('class-page').setAttribute('data-class',classKey);
+  document.getElementById('nav-class-label').textContent=data.name;
+  document.getElementById('info-name').textContent=data.name;
+  document.getElementById('info-topic').textContent=data.topic;
+  document.getElementById('info-note').textContent=data.note;
+  document.getElementById('info-encourage').textContent=data.encourage;
+  document.getElementById('class-header-bar').setAttribute('data-emoji',data.emoji);
+  renderFixedGroups();
+  renderStudents();
+  renderReminders();
+  switchTab('info',getNavTab(1));
+  switchGroupMode('fixed',document.getElementById('fixed-tab-btn'));
+  document.getElementById('timer-fab').classList.remove('hidden');
+  showPage('class-page');
+}
+function getNavTab(n){return document.querySelector(`.nav-tab:nth-child(${n})`);}
+
+/* ===================================================
+   Tab 切換
+   =================================================== */
+function switchTab(tabId,btnEl){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));
+  document.getElementById('tab-'+tabId).classList.remove('hidden');
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+}
+
+/* ===================================================
+   教材
+   =================================================== */
+function openPublisher(pub){
+  const url=CLASS_DATA[currentClass]?.publishers[pub];
+  if(url&&url!=='#') window.open(url,'_blank');
+  else alert('目前尚未設定連結，可日後替換為實際網址。');
+}
+
+/* ===================================================
+   班級資訊欄位編輯（點擊直接編輯）
+   =================================================== */
+function editInfoField(field){
+  const data=CLASS_DATA[currentClass];
+  // 課程主題 & 備註：一般輸入框
+  if(field==='topic'||field==='note'){
+    const el=document.getElementById('info-'+field);
+    if(el.querySelector('input')) return; // 已在編輯中
+    const current=data[field];
+    const input=document.createElement('input');
+    input.className='info-edit-input';
+    input.value=current;
+    input.maxLength=60;
+    el.innerHTML='';
+    el.appendChild(input);
+    input.focus(); input.select();
+    const save=()=>{
+      const newVal=input.value.trim()||current;
+      data[field]=newVal;
+      el.textContent=newVal;
+    };
+    input.addEventListener('blur',save);
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')input.blur();if(e.key==='Escape'){input.value=current;input.blur();}});
+  }
+  // 鼓勵語：也是輸入框，但在 encourage-tag 上
+  if(field==='encourage'){
+    const el=document.getElementById('info-encourage');
+    if(el.querySelector('input')) return;
+    const current=data.encourage;
+    const input=document.createElement('input');
+    input.className='info-edit-input';
+    input.value=current;
+    input.maxLength=30;
+    input.style.borderRadius='50px';
+    el.innerHTML='';
+    el.appendChild(input);
+    input.focus(); input.select();
+    const save=()=>{
+      const newVal=input.value.trim()||current;
+      data.encourage=newVal;
+      el.textContent=newVal;
+    };
+    input.addEventListener('blur',save);
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')input.blur();if(e.key==='Escape'){input.value=current;input.blur();}});
+  }
+}
+
+/* ===================================================
+   固定分組
+   =================================================== */
+function renderFixedGroups(){
+  const data=CLASS_DATA[currentClass];
+  const container=document.getElementById('fixed-groups-container');
+  container.innerHTML='';
+  updateLeaderBar();
+  updateGroupCountHint();
+  data.fixedGroups.forEach((group,idx)=>{
+    const card=document.createElement('div');
+    card.className='group-card pop-in';
+    card.innerHTML=`
+      <div class="group-card-header">
+        <span class="group-name" title="點兩下可編輯組名" ondblclick="editGroupName(this,'fixed',${idx})">${group.name}</span>
+        <span style="font-size:0.78rem;opacity:0.45;">固定組</span>
+      </div>
+      <div class="group-score-display" id="fg-score-${currentClass}-${idx}">${group.score}</div>
+      <div class="group-members">${group.members.map(m=>'👤 '+m).join('　')}</div>
+      <div class="score-btns">
+        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},5)">+5</button>
+        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},2)">+2</button>
+        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},1)">+1</button>
+        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-1)">-1</button>
+        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-2)">-2</button>
+        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-5)">-5</button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+/* 新增固定分組 */
+function addFixedGroup(){
+  const data=CLASS_DATA[currentClass];
+  const names=['A組','B組','C組','D組','E組','F組'];
+  const newName=names[data.fixedGroups.length]||`第${data.fixedGroups.length+1}組`;
+  data.fixedGroups.push({name:newName, score:0, members:[]});
+  renderFixedGroups();
+  renderStudents(); // 更新分組下拉選單
+}
+
+/* 刪除最後一固定分組 */
+function deleteLastFixedGroup(){
+  const data=CLASS_DATA[currentClass];
+  if(data.fixedGroups.length<=1){alert('至少要保留一組喔！');return;}
+  const last=data.fixedGroups[data.fixedGroups.length-1];
+  if(!confirm(`確定要刪除「${last.name}」嗎？\n該組成員的所屬組別將顯示為空。`)) return;
+  data.fixedGroups.pop();
+  renderFixedGroups();
+  renderStudents();
+}
+
+function updateGroupCountHint(){
+  const data=CLASS_DATA[currentClass];
+  const el=document.getElementById('group-count-hint');
+  if(el) el.textContent=`目前共 ${data.fixedGroups.length} 組`;
+}
+
+/* 雙擊編輯組名 */
+function editGroupName(el,type,idx){
+  const currentName=type==='fixed'
+    ?CLASS_DATA[currentClass].fixedGroups[idx].name
+    :randomGroupNames[idx];
+  const input=document.createElement('input');
+  input.className='group-name-input';
+  input.value=currentName; input.maxLength=8;
+  el.replaceWith(input); input.focus(); input.select();
+  const save=()=>{
+    const newName=input.value.trim()||currentName;
+    if(type==='fixed'){
+      CLASS_DATA[currentClass].fixedGroups[idx].name=newName;
+      CLASS_DATA[currentClass].students.forEach(s=>{if(s.group===currentName)s.group=newName;});
+      renderFixedGroups(); renderStudents(); updateLeaderBar();
+    } else {
+      randomGroupNames[idx]=newName; renderRandomGroups();
+    }
+  };
+  input.addEventListener('blur',save);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter')input.blur();
+    if(e.key==='Escape'){input.value=currentName;input.blur();}
+  });
+}
+
+function fixedGroupScore(classKey,idx,delta){
+  const group=CLASS_DATA[classKey].fixedGroups[idx];
+  group.score=Math.max(0,group.score+delta);
+  flashScore(`fg-score-${classKey}-${idx}`,group.score);
+  updateLeaderBar();
+  saveGroupScore(classKey, idx, group.score); // 存到 Firebase
+}
+
+function updateLeaderBar(){
+  const data=CLASS_DATA[currentClass];
+  if(!data) return;
+  const sorted=[...data.fixedGroups].sort((a,b)=>b.score-a.score);
+  const leaderEl=document.getElementById('rank-leader');
+  if(leaderEl) leaderEl.textContent=`${sorted[0].name}（${sorted[0].score} 分）🎉`;
+}
+
+/* ===================================================
+   隨機分組
+   =================================================== */
+const RANDOM_GROUP_EMOJIS=['🔴','🔵','🟢','🟡'];
+function selectN(n,btnEl){
+  randomGroupN=n;
+  document.querySelectorAll('.n-btn').forEach(b=>b.classList.remove('selected'));
+  if(btnEl) btnEl.classList.add('selected');
+}
+function doRandomGroup(){
+  const data=CLASS_DATA[currentClass];
+  const students=data.students.map(s=>s.name);
+  for(let i=students.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [students[i],students[j]]=[students[j],students[i]];
+  }
+  randomGroups=Array.from({length:randomGroupN},()=>[]);
+  randomGroupScores=Array(randomGroupN).fill(0);
+  randomGroupNames=['紅隊','藍隊','綠隊','黃隊'].slice(0,randomGroupN);
+  students.forEach((s,i)=>randomGroups[i%randomGroupN].push(s));
+  renderRandomGroups();
+}
+function renderRandomGroups(){
+  const container=document.getElementById('random-groups-container');
+  container.innerHTML='';
+  randomGroups.forEach((members,idx)=>{
+    const card=document.createElement('div');
+    card.className='group-card pop-in';
+    card.innerHTML=`
+      <div class="group-card-header">
+        <span class="group-name" title="點兩下可編輯組名" ondblclick="editGroupName(this,'random',${idx})">${RANDOM_GROUP_EMOJIS[idx]} ${randomGroupNames[idx]}</span>
+        <span style="font-size:0.78rem;opacity:0.45;">隨機組</span>
+      </div>
+      <div class="group-score-display" id="rg-score-${idx}">${randomGroupScores[idx]}</div>
+      <div class="group-members">${members.map(m=>'👤 '+m).join('　')}</div>
+      <div class="score-btns">
+        <button class="score-btn plus" onclick="randomGroupScore(${idx},5)">+5</button>
+        <button class="score-btn plus" onclick="randomGroupScore(${idx},2)">+2</button>
+        <button class="score-btn plus" onclick="randomGroupScore(${idx},1)">+1</button>
+        <button class="score-btn minus" onclick="randomGroupScore(${idx},-1)">-1</button>
+        <button class="score-btn minus" onclick="randomGroupScore(${idx},-2)">-2</button>
+        <button class="score-btn minus" onclick="randomGroupScore(${idx},-5)">-5</button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+function randomGroupScore(idx,delta){
+  randomGroupScores[idx]=Math.max(0,randomGroupScores[idx]+delta);
+  flashScore(`rg-score-${idx}`,randomGroupScores[idx]);
+}
+function switchGroupMode(mode,btnEl){
+  ['fixed-tab-btn','random-tab-btn'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  if(mode==='fixed'){
+    document.getElementById('fixed-group-area').classList.remove('hidden');
+    document.getElementById('random-group-area').classList.add('hidden');
+  } else {
+    document.getElementById('fixed-group-area').classList.add('hidden');
+    document.getElementById('random-group-area').classList.remove('hidden');
+    if(randomGroups.length===0) doRandomGroup();
+  }
+}
+
+/* ===================================================
+   學生
+   =================================================== */
+function renderStudents(){
+  const data=CLASS_DATA[currentClass];
+  const container=document.getElementById('students-container');
+  container.innerHTML='';
+  document.getElementById('student-count-label').textContent=`共 ${data.students.length} 位學生`;
+  const sel=document.getElementById('new-student-group');
+  sel.innerHTML=data.fixedGroups.map(g=>`<option value="${g.name}">${g.name}</option>`).join('');
+  data.students.forEach((stu,idx)=>{
+    const card=document.createElement('div');
+    card.className='student-card pop-in';
+    // 建立組別下拉選項
+    const groupOptions=data.fixedGroups.map(g=>
+      `<option value="${g.name}"${g.name===stu.group?' selected':''}>${g.name}</option>`
+    ).join('');
+    card.innerHTML=`
+      <button class="delete-student-btn" onclick="deleteStudent(${idx})" title="刪除學生">✕</button>
+      <div class="student-name" title="點兩下可編輯姓名" ondblclick="editStudentName(this,${idx})">${stu.name}</div>
+      <select class="student-group-select" onchange="changeStudentGroup('${currentClass}',${idx},this.value)" title="點擊可換組">
+        ${groupOptions}
+      </select>
+      <div class="student-score" id="stu-score-${currentClass}-${idx}">${stu.score}</div>
+      <div class="student-score-btns">
+        <button class="student-score-btn score-btn plus" onclick="studentScore('${currentClass}',${idx},2)">+2</button>
+        <button class="student-score-btn score-btn plus" onclick="studentScore('${currentClass}',${idx},1)">+1</button>
+        <button class="student-score-btn score-btn minus" onclick="studentScore('${currentClass}',${idx},-1)">-1</button>
+        <button class="student-score-btn score-btn minus" onclick="studentScore('${currentClass}',${idx},-2)">-2</button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+function editStudentName(el,idx){
+  const data=CLASS_DATA[currentClass];
+  const currentName=data.students[idx].name;
+  const input=document.createElement('input');
+  input.className='student-name-input'; input.value=currentName; input.maxLength=10;
+  el.replaceWith(input); input.focus(); input.select();
+  const save=()=>{
+    const newName=input.value.trim()||currentName;
+    data.students[idx].name=newName;
+    // 同步更新固定分組成員名單裡的舊名字
+    data.fixedGroups.forEach(g=>{
+      const mi=g.members.indexOf(currentName);
+      if(mi!==-1) g.members[mi]=newName;
+    });
+    renderStudents();
+    renderFixedGroups();
+  };
+  input.addEventListener('blur',save);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')input.blur();if(e.key==='Escape'){input.value=currentName;input.blur();}});
+}
+function studentScore(classKey,idx,delta){
+  const stu=CLASS_DATA[classKey].students[idx];
+  stu.score=Math.max(0,stu.score+delta);
+  flashScore(`stu-score-${classKey}-${idx}`,stu.score);
+  saveStudentScore(classKey, idx, stu.score); // 存到 Firebase
+}
+/* 學生換組：直接從下拉選單觸發 */
+function changeStudentGroup(classKey,idx,newGroup){
+  const data=CLASS_DATA[classKey];
+  const stu=data.students[idx];
+  const oldGroup=stu.group;
+  stu.group=newGroup;
+  // 從舊組的成員名單移除
+  data.fixedGroups.forEach(g=>{
+    const mi=g.members.indexOf(stu.name);
+    if(mi!==-1) g.members.splice(mi,1);
+  });
+  // 加入新組的成員名單
+  const target=data.fixedGroups.find(g=>g.name===newGroup);
+  if(target&&!target.members.includes(stu.name)) target.members.push(stu.name);
+  renderFixedGroups();
+}
+function addStudent(){
+  const nameInput=document.getElementById('new-student-name');
+  const groupSel=document.getElementById('new-student-group');
+  const name=nameInput.value.trim();
+  if(!name){nameInput.focus();nameInput.style.borderColor='#e88';setTimeout(()=>nameInput.style.borderColor='',800);return;}
+  CLASS_DATA[currentClass].students.push({name,group:groupSel.value,score:0});
+  nameInput.value='';
+  renderStudents();
+}
+function deleteStudent(idx){
+  const name=CLASS_DATA[currentClass].students[idx].name;
+  if(!confirm(`確定要刪除「${name}」嗎？`)) return;
+  CLASS_DATA[currentClass].students.splice(idx,1);
+  renderStudents();
+}
+
+/* ===================================================
+   今日提醒
+   =================================================== */
+function renderReminders(){
+  const data=CLASS_DATA[currentClass];
+  const list=document.getElementById('reminder-list');
+  list.innerHTML='';
+  data.reminders.forEach(r=>{
+    const item=document.createElement('div');
+    item.className='reminder-item';
+    item.innerHTML=`<span style="font-size:1.3rem;">${r.icon}</span><span>${r.text}</span>`;
+    list.appendChild(item);
+  });
+}
+
+/* ===================================================
+   分數閃爍
+   =================================================== */
+function flashScore(id,val){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent=val;
+  el.classList.remove('score-flash');
+  void el.offsetWidth;
+  el.classList.add('score-flash');
+}
+
+/* ===================================================
+   倒數計時器
+   =================================================== */
+function openTimer(){
+  document.getElementById('timer-overlay').classList.add('open');
+  if(!timerRunning) syncDisplayFromInputs();
+}
+function closeTimer(){
+  document.getElementById('timer-overlay').classList.remove('open');
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('timer-overlay')) closeTimer();
+}
+function setPreset(min){
+  stopTimer();
+  document.getElementById('timer-min-input').value=min;
+  document.getElementById('timer-sec-input').value=0;
+  timerTotal=min*60; timerRemaining=timerTotal;
+  updateTimerDisplay();
+  document.getElementById('timer-start-btn').textContent='▶ 開始';
+}
+function syncDisplayFromInputs(){
+  const m=parseInt(document.getElementById('timer-min-input').value)||0;
+  const s=parseInt(document.getElementById('timer-sec-input').value)||0;
+  timerTotal=m*60+s; timerRemaining=timerTotal;
+  updateTimerDisplay();
+}
+function toggleTimer(){
+  if(timerRemaining<=0){syncDisplayFromInputs();if(timerRemaining<=0)return;}
+  timerRunning?pauseTimer():startTimer();
+}
+function startTimer(){
+  timerRunning=true;
+  document.getElementById('timer-start-btn').textContent='⏸ 暫停';
+  timerInterval=setInterval(()=>{
+    timerRemaining--;
+    updateTimerDisplay();
+    if(timerRemaining<=0){
+      clearInterval(timerInterval);
+      timerRunning=false;
+      document.getElementById('timer-start-btn').textContent='▶ 開始';
+      timerFinished();
+    }
+  },1000);
+}
+function pauseTimer(){
+  clearInterval(timerInterval); timerRunning=false;
+  document.getElementById('timer-start-btn').textContent='▶ 繼續';
+}
+function stopTimer(){
+  clearInterval(timerInterval); timerRunning=false;
+}
+function resetTimer(){
+  stopTimer(); syncDisplayFromInputs();
+  document.getElementById('timer-start-btn').textContent='▶ 開始';
+  document.getElementById('timer-display').classList.remove('warning','danger');
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timerRemaining/60);
+  const s=timerRemaining%60;
+  document.getElementById('timer-display').textContent=
+    String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const disp=document.getElementById('timer-display');
+  const pct=timerTotal>0?timerRemaining/timerTotal:1;
+  disp.classList.remove('warning','danger');
+  if(timerRemaining<=10) disp.classList.add('danger');
+  else if(pct<=0.25) disp.classList.add('warning');
+}
+
+/* ===================================================
+   計時完成：可愛音效 + 彩帶 + 彈窗
+   =================================================== */
+// 鼓勵語輪替
+const DONE_MESSAGES=[
+  {emoji:'🎉',sub:'時間到囉！大家表現超棒 ✨'},
+  {emoji:'🌟',sub:'做得非常好！繼續保持喔 🌈'},
+  {emoji:'🥳',sub:'太厲害了！老師為你們驕傲 💛'},
+  {emoji:'🎊',sub:'完成了！大家辛苦了，掌聲鼓勵 👏'},
+  {emoji:'🌸',sub:'好棒喔！一起繼續努力吧 🌱'},
+];
+
+function timerFinished(){
+  document.getElementById('timer-display').textContent='00:00';
+  document.getElementById('timer-display').classList.add('danger');
+
+  // 播放可愛完成音效（兒歌式上行旋律）
+  playCuteFinishSound();
+
+  // 彩帶
+  spawnConfetti();
+
+  // 隨機鼓勵語
+  const msg=DONE_MESSAGES[Math.floor(Math.random()*DONE_MESSAGES.length)];
+  document.getElementById('timer-done-emoji').textContent=msg.emoji;
+  document.getElementById('timer-done-sub').textContent=msg.sub;
+
+  // 顯示彈窗（稍微延遲讓彩帶先出現）
+  setTimeout(()=>{
+    document.getElementById('timer-done-overlay').classList.add('show');
+  },300);
+}
+
+function closeDone(){
+  document.getElementById('timer-done-overlay').classList.remove('show');
+  document.getElementById('confetti-container').innerHTML='';
+}
+
+/* 可愛完成音效：使用 Web Audio API 合成兒歌式旋律 */
+function playCuteFinishSound(){
+  try {
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+
+    // 小星星式 Do-Do-Sol-Sol-La-La-Sol ♪ 用五聲音階簡化
+    // 頻率：C5=523, D5=587, E5=659, G5=784, A5=880, C6=1047
+    const melody=[
+      {f:523,t:0,d:0.18},   // Do
+      {f:523,t:0.18,d:0.18}, // Do
+      {f:784,t:0.36,d:0.18}, // Sol
+      {f:784,t:0.54,d:0.18}, // Sol
+      {f:880,t:0.72,d:0.18}, // La
+      {f:880,t:0.90,d:0.18}, // La
+      {f:784,t:1.08,d:0.32}, // Sol (長)
+      {f:659,t:1.50,d:0.18}, // Mi
+      {f:659,t:1.68,d:0.18}, // Mi
+      {f:587,t:1.86,d:0.18}, // Re
+      {f:587,t:2.04,d:0.18}, // Re
+      {f:523,t:2.22,d:0.36}, // Do (長)
+      // 收尾和弦
+      {f:523,t:2.70,d:0.5,chord:true},
+      {f:659,t:2.70,d:0.5,chord:true},
+      {f:784,t:2.70,d:0.5,chord:true},
+      {f:1047,t:2.70,d:0.5,chord:true},
+    ];
+
+    melody.forEach(note=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      // 用 triangle 波形讓聲音更柔和可愛
+      osc.type='triangle';
+      osc.frequency.value=note.f;
+      osc.connect(gain); gain.connect(ctx.destination);
+      const vol=note.chord?0.12:0.22;
+      gain.gain.setValueAtTime(0,ctx.currentTime+note.t);
+      gain.gain.linearRampToValueAtTime(vol,ctx.currentTime+note.t+0.02);
+      gain.gain.setValueAtTime(vol,ctx.currentTime+note.t+note.d-0.04);
+      gain.gain.linearRampToValueAtTime(0,ctx.currentTime+note.t+note.d);
+      osc.start(ctx.currentTime+note.t);
+      osc.stop(ctx.currentTime+note.t+note.d+0.05);
+    });
+
+    // 背景小鈴聲：高頻短音點綴
+    [0.05,0.23,0.41,0.59,0.77,0.95,1.13].forEach((t,i)=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.type='sine';
+      osc.frequency.value=1200+(i*80);
+      osc.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0,ctx.currentTime+t);
+      gain.gain.linearRampToValueAtTime(0.06,ctx.currentTime+t+0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.15);
+      osc.start(ctx.currentTime+t);
+      osc.stop(ctx.currentTime+t+0.2);
+    });
+
+  } catch(e){}
+}
+
+/* 彩帶生成 */
+function spawnConfetti(){
+  const container=document.getElementById('confetti-container');
+  container.innerHTML='';
+  const colors=['#e8956d','#f5c4a0','#72b582','#b4dfc0','#5da8c4','#9fd0e4','#f7c948','#f28abf','#a78bfa'];
+  for(let i=0;i<70;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    const color=colors[Math.floor(Math.random()*colors.length)];
+    const left=Math.random()*100;
+    const delay=Math.random()*1.2;
+    const duration=2.5+Math.random()*2;
+    const size=6+Math.random()*10;
+    const rotate=Math.random()>0.5?'2px':'50%';
+    piece.style.cssText=`
+      left:${left}%;
+      background:${color};
+      width:${size}px; height:${size}px;
+      border-radius:${rotate};
+      animation-delay:${delay}s;
+      animation-duration:${duration}s;
+    `;
+    container.appendChild(piece);
+  }
+  // 3.5 秒後清除彩帶
+  setTimeout(()=>{container.innerHTML='';},4000);
+}
+
+/* 輸入框即時同步 */
+['timer-min-input','timer-sec-input'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>{
+    if(!timerRunning) syncDisplayFromInputs();
+  });
+});
+
+/* ===================================================
+   Firebase 初始化與資料同步
+   =================================================== */
+// 使用 Firebase CDN（不需要 npm）
+const _fbScript = document.createElement('script');
+_fbScript.type = 'module';
+_fbScript.textContent = `
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA",
+    authDomain: "classroom-helper-88f09.firebaseapp.com",
+    databaseURL: "https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "classroom-helper-88f09",
+    storageBucket: "classroom-helper-88f09.firebasestorage.app",
+    messagingSenderId: "679142147221",
+    appId: "1:679142147221:web:a8b4ed5c26fe1b8b23479c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // 將 Firebase 存取函式掛載到 window，讓其他函式可以呼叫
+  window._fbDb = db;
+  window._fbRef = ref;
+  window._fbSet = set;
+  window._fbOnValue = onValue;
+  window._fbReady = true;
+
+  // 從 Firebase 讀取所有分數並套用
+  function loadAllScores() {
+    const classes = ['c1','c2','c3'];
+    classes.forEach(ck => {
+      // 讀取固定分組分數
+      onValue(ref(db, ck + '/fixedGroups'), snapshot => {
+        const data = snapshot.val();
+        if (!data) return;
+        Object.keys(data).forEach(idx => {
+          if (data[idx].score !== undefined) {
+            CLASS_DATA[ck].fixedGroups[idx].score = data[idx].score;
+            const el = document.getElementById('fg-score-' + ck + '-' + idx);
+            if (el) el.textContent = data[idx].score;
+          }
+        });
+        if (window.currentClass === ck) window.updateLeaderBar();
+      });
+
+      // 讀取學生個人分數
+      onValue(ref(db, ck + '/students'), snapshot => {
+        const data = snapshot.val();
+        if (!data) return;
+        Object.keys(data).forEach(idx => {
+          if (data[idx].score !== undefined) {
+            CLASS_DATA[ck].students[idx].score = data[idx].score;
+            const el = document.getElementById('stu-score-' + ck + '-' + idx);
+            if (el) el.textContent = data[idx].score;
+          }
+        });
+      });
+    });
+  }
+
+  loadAllScores();
+  console.log('✅ Firebase 連線成功！');
+`;
+document.head.appendChild(_fbScript);
+
+// 儲存固定分組分數到 Firebase
+function saveGroupScore(classKey, idx, score) {
+  if (!window._fbReady) return;
+  window._fbSet(window._fbRef(window._fbDb, classKey + '/fixedGroups/' + idx + '/score'), score);
+}
+
+// 儲存學生分數到 Firebase
+function saveStudentScore(classKey, idx, score) {
+  if (!window._fbReady) return;
+  window._fbSet(window._fbRef(window._fbDb, classKey + '/students/' + idx + '/score'), score);
+}
+
+// 清除所有分數（學期結束用）
+function resetAllScores() {
+  if (!confirm('確定要清除所有班級的分數嗎？\n此操作無法復原。')) return;
+  ['c1','c2','c3'].forEach(ck => {
+    CLASS_DATA[ck].fixedGroups.forEach((g, idx) => {
+      g.score = 0;
+      saveGroupScore(ck, idx, 0);
+    });
+    CLASS_DATA[ck].students.forEach((s, idx) => {
+      s.score = 0;
+      saveStudentScore(ck, idx, 0);
+    });
+  });
+  renderFixedGroups();
+  renderStudents();
+  alert('✅ 所有分數已清除！');
+}
+
+</script>
+</body>
+</html>
