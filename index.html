@@ -689,7 +689,7 @@ function saveTopics(ck){
   window._fbSet(window._fbRef(window._fbDb, ck+'/topics'), CLASS_DATA[ck].topics);
 }
 window.renderTopicSelect = function(ck){ if(currentClass===ck) renderTopicSelect(); };
-window.updateLeaderBar = function(){ updateLeaderBar(); };
+window.updateLeaderBar = function(ck){ if(currentClass===ck) updateLeaderBar(); };
 window.currentClass = null;
 
 /* 備註/鼓勵語編輯 */
@@ -958,7 +958,7 @@ _fbScript.textContent=`
   const db=getDatabase(app);
   window._fbDb=db;window._fbRef=ref;window._fbSet=set;window._fbReady=true;
   ['c1','c2','c3'].forEach(ck=>{
-    onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el=document.getElementById('fg-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});if(window.currentClass===ck)window.updateLeaderBar();});
+    onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el=document.getElementById('fg-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});if(window.currentClass===ck)window.updateLeaderBar(ck);});
     onValue(ref(db,ck+'/students'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});});
     onValue(ref(db,ck+'/topics'),snap=>{const d=snap.val();if(!d)return;CLASS_DATA[ck].topics=d;if(window.currentClass===ck){window.renderTopicSelect(ck);}});
   });
