@@ -686,7 +686,8 @@ function deleteTopic(idx){
 }
 function saveTopics(ck){
   if(!window._fbReady) return;
-  window._fbSet(window._fbRef(window._fbDb, ck+'/topics'), CLASS_DATA[ck].topics);
+  // 存成 JSON 字串避免 Firebase 陣列格式問題
+  window._fbSet(window._fbRef(window._fbDb, ck+'/topicsJson'), JSON.stringify(CLASS_DATA[ck].topics));
 }
 window.renderTopicSelect = function(ck){ if(currentClass===ck) renderTopicSelect(); };
 window.updateLeaderBar = function(ck){ if(currentClass===ck) updateLeaderBar(); };
@@ -960,7 +961,7 @@ _fbScript.textContent=`
   ['c1','c2','c3'].forEach(ck=>{
     onValue(ref(db,ck+'/fixedGroups'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].fixedGroups[i].score=d[i].score;const el=document.getElementById('fg-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});if(window.currentClass===ck)window.updateLeaderBar(ck);});
     onValue(ref(db,ck+'/students'),snap=>{const d=snap.val();if(!d)return;Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});});
-    onValue(ref(db,ck+'/topics'),snap=>{const d=snap.val();if(!d)return;CLASS_DATA[ck].topics=Array.isArray(d)?d:Object.values(d);if(window.currentClass===ck){window.renderTopicSelect(ck);}});
+    onValue(ref(db,ck+'/topicsJson'),snap=>{const d=snap.val();if(!d)return;try{const arr=JSON.parse(d);if(Array.isArray(arr)){CLASS_DATA[ck].topics=arr;if(window.currentClass===ck)window.renderTopicSelect(ck);}}catch(e){}});
   });
   console.log('✅ Firebase 連線成功！');
 `;
