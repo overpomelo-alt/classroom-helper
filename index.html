@@ -5,15 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>課堂小幫手 🌱</title>
 <style>
-:root {
-  --font-main: 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
-  --home-bg: #fdf8f2;
-  --c1-primary:#e8956d;--c1-light:#fff4ee;--c1-mid:#fde8d8;--c1-dark:#c4633a;--c1-tag:#f5c4a0;
-  --c2-primary:#72b582;--c2-light:#f0f9f2;--c2-mid:#d6f0dc;--c2-dark:#4a8a5a;--c2-tag:#b4dfc0;
-  --c3-primary:#5da8c4;--c3-light:#eef7fb;--c3-mid:#c8e8f4;--c3-dark:#3a7d98;--c3-tag:#9fd0e4;
-  --shadow-sm:0 2px 8px rgba(0,0,0,0.08);--shadow-md:0 4px 16px rgba(0,0,0,0.10);--shadow-lg:0 8px 32px rgba(0,0,0,0.12);
-  --radius-sm:10px;--radius-md:16px;--radius-lg:24px;--radius-xl:32px;
-}
+:root{--font-main:'Noto Sans TC','Microsoft JhengHei','微軟正黑體',sans-serif;--home-bg:#fdf8f2;--c1-primary:#e8956d;--c1-light:#fff4ee;--c1-mid:#fde8d8;--c1-dark:#c4633a;--c1-tag:#f5c4a0;--c2-primary:#72b582;--c2-light:#f0f9f2;--c2-mid:#d6f0dc;--c2-dark:#4a8a5a;--c2-tag:#b4dfc0;--c3-primary:#5da8c4;--c3-light:#eef7fb;--c3-mid:#c8e8f4;--c3-dark:#3a7d98;--c3-tag:#9fd0e4;--shadow-sm:0 2px 8px rgba(0,0,0,0.08);--shadow-md:0 4px 16px rgba(0,0,0,0.10);--shadow-lg:0 8px 32px rgba(0,0,0,0.12);--radius-sm:10px;--radius-md:16px;--radius-lg:24px;--radius-xl:32px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font-main);background:var(--home-bg);min-height:100vh;color:#3a3028;line-height:1.6;}
 .hidden{display:none!important;}
@@ -24,8 +16,6 @@ input,select,textarea{font-family:var(--font-main);}
 .section-title{font-size:1.1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .card{background:white;border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-sm);}
 .page{display:none;}.page.active{display:block;}
-
-/* 首頁 */
 #home-page{min-height:100vh;background:linear-gradient(160deg,#fdf8f2 0%,#fef0e4 50%,#f8f4f0 100%);padding:40px 20px;}
 .home-header{text-align:center;margin-bottom:48px;}
 .home-header .logo-emoji{font-size:3.5rem;display:block;margin-bottom:12px;animation:floatEmoji 3s ease-in-out infinite;}
@@ -47,8 +37,6 @@ input,select,textarea{font-family:var(--font-main);}
 .home-class-card.c2 .enter-btn{background:var(--c2-primary);}
 .home-class-card.c3 .enter-btn{background:var(--c3-primary);}
 .home-footer{text-align:center;margin-top:60px;color:#bba898;font-size:0.85rem;}
-
-/* 班級頁面 */
 #class-page{min-height:100vh;}
 .topnav{padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100;background:white;}
 .nav-left{display:flex;align-items:center;gap:12px;}
@@ -60,8 +48,6 @@ input,select,textarea{font-family:var(--font-main);}
 .nav-tab:hover{background:#f5f0eb;color:#5a4a3a;}
 .nav-tab.active{color:white;}
 .class-content{max-width:1200px;margin:0 auto;padding:28px 24px 80px;}
-
-/* 班級資訊 */
 .class-header-bar{border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;position:relative;overflow:hidden;}
 .class-header-bar::after{content:attr(data-emoji);position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:0.15;pointer-events:none;}
 .class-info-item{flex:1;min-width:180px;}
@@ -70,15 +56,10 @@ input,select,textarea{font-family:var(--font-main);}
 .class-info-item .value-hint{font-size:0.72rem;color:#bbb;margin-top:2px;}
 .info-edit-input{font-size:0.95rem;font-weight:600;border:2px solid #aaa;border-radius:8px;padding:4px 10px;outline:none;width:100%;font-family:var(--font-main);background:#fffbe8;}
 .encourage-tag{display:inline-block;padding:6px 16px;border-radius:50px;font-size:0.9rem;font-weight:700;margin-top:8px;}
-
-/* 1. 課程主題下拉選單 */
 .topic-select-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .topic-select{font-size:0.95rem;font-weight:600;border:2px solid #ddd;border-radius:10px;padding:5px 10px;outline:none;background:white;cursor:pointer;max-width:260px;}
-.topic-select:focus{border-color:#aaa;}
 .topic-manage-btn{font-size:0.78rem;padding:4px 12px;border-radius:50px;background:#f0ebe5;color:#5a4a3a;font-weight:600;}
 .topic-manage-btn:hover{background:#e5dfd8;}
-
-/* 主題管理彈窗 */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(40,30,20,0.5);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
 .modal-overlay.open{display:flex;}
 .modal-box{background:white;border-radius:var(--radius-xl);padding:32px;min-width:340px;max-width:480px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;animation:popIn 0.2s ease;}
@@ -92,20 +73,14 @@ input,select,textarea{font-family:var(--font-main);}
 .topic-add-input{flex:1;padding:8px 14px;border-radius:50px;border:2px solid #e0d8d0;font-size:0.9rem;outline:none;}
 .topic-add-input:focus{border-color:#aaa;}
 .topic-add-btn{border-radius:50px;padding:8px 18px;font-size:0.9rem;font-weight:700;color:white;}
-
-/* 教材 */
 .publisher-grid{display:flex;gap:14px;flex-wrap:wrap;}
 .publisher-btn{flex:1;min-width:120px;padding:18px 16px;border-radius:var(--radius-md);font-size:1rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all 0.2s;}
 .publisher-btn:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
 .publisher-btn .pub-emoji{font-size:1.8rem;}
-
-/* Tab 切換 */
 .tab-switcher{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
 .tab-switch-btn{padding:9px 22px;border-radius:50px;font-size:0.92rem;font-weight:600;background:#f0ebe5;color:#7a6a5a;}
 .tab-switch-btn.active{color:white;}
 .tab-switch-btn:hover:not(.active){background:#e5dfd8;}
-
-/* 分組 */
 .groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
 .group-card{border-radius:var(--radius-md);padding:18px;box-shadow:var(--shadow-sm);background:white;transition:box-shadow 0.2s;}
 .group-card:hover{box-shadow:var(--shadow-md);}
@@ -126,15 +101,11 @@ input,select,textarea{font-family:var(--font-main);}
 .group-mgmt-btn{border-radius:50px;padding:7px 18px;font-size:0.88rem;font-weight:600;background:#f0ebe5;color:#5a4a3a;}
 .group-mgmt-btn:hover{background:#e5dfd8;}
 .group-mgmt-btn.danger{background:#fce4ec;color:#c62828;}
-
-/* 隨機分組 */
 .random-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
 .n-btn{border-radius:50px;padding:8px 20px;font-size:0.9rem;font-weight:600;background:#f0ebe5;color:#5a4a3a;}
 .n-btn.selected{color:white;}
 .n-btn:hover:not(.selected){background:#e5dfd8;}
 .random-go-btn{border-radius:50px;padding:10px 28px;font-size:1rem;font-weight:800;color:white;box-shadow:var(--shadow-sm);}
-
-/* 學生 */
 .students-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
 .student-card{background:white;border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);text-align:center;transition:box-shadow 0.2s;position:relative;}
@@ -154,8 +125,6 @@ input,select,textarea{font-family:var(--font-main);}
 .add-student-form{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px;padding:16px;background:#fafafa;border-radius:var(--radius-md);border:2px dashed #ddd;}
 .add-student-form input,.add-student-form select{padding:8px 14px;border-radius:50px;border:2px solid #e0d8d0;font-size:0.9rem;outline:none;background:white;}
 .add-btn{border-radius:50px;padding:8px 22px;font-size:0.9rem;font-weight:700;color:white;}
-
-/* 2. 今日提醒可編輯 */
 .reminder-list{display:flex;flex-direction:column;gap:10px;}
 .reminder-item{display:flex;align-items:center;gap:10px;padding:12px 16px;background:white;border-radius:var(--radius-sm);font-size:0.9rem;box-shadow:var(--shadow-sm);}
 .reminder-item span.r-text{flex:1;}
@@ -163,28 +132,20 @@ input,select,textarea{font-family:var(--font-main);}
 .reminder-add-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
 .reminder-icon-sel{padding:7px 10px;border-radius:10px;border:2px solid #e0d8d0;font-size:1rem;outline:none;background:white;}
 .reminder-text-input{flex:1;padding:8px 14px;border-radius:50px;border:2px solid #e0d8d0;font-size:0.9rem;outline:none;min-width:160px;}
-.reminder-text-input:focus{border-color:#aaa;}
-
-/* 4. 綜合統計 */
 .summary-card{background:white;border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-md);margin-bottom:20px;}
 .summary-title{font-size:1rem;font-weight:800;color:#3a3028;margin-bottom:16px;}
 .summary-table{width:100%;border-collapse:collapse;}
 .summary-table th{text-align:left;font-size:0.8rem;font-weight:700;color:#7a6a5a;padding:6px 12px;border-bottom:2px solid #f0ebe5;}
 .summary-table td{padding:8px 12px;font-size:0.9rem;border-bottom:1px solid #f5f0eb;}
 .summary-table .total-col{font-weight:800;font-size:1rem;}
-.summary-badge{display:inline-block;padding:2px 10px;border-radius:50px;font-size:0.75rem;font-weight:700;}
-
-/* 5. 輪流發言 */
 .speaker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
-.speaker-card{border-radius:var(--radius-md);padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);background:white;position:relative;}
+.speaker-card{border-radius:var(--radius-md);padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);background:white;}
 .speaker-card.spoken{background:#e8f5e9;opacity:0.6;}
 .speaker-card.spoken .speaker-name{text-decoration:line-through;color:#aaa;}
 .speaker-card .speaker-name{font-size:0.95rem;font-weight:700;}
 .speaker-card .speaker-check{font-size:1.2rem;display:block;margin-bottom:4px;}
 .speaker-reset-btn{border-radius:50px;padding:8px 22px;font-size:0.9rem;font-weight:700;background:#f0ebe5;color:#5a4a3a;}
 .speaker-hint{font-size:0.82rem;color:#9a8a7a;margin-bottom:12px;}
-
-/* 計時器 */
 .timer-overlay{display:none;position:fixed;inset:0;background:rgba(40,30,20,0.55);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .timer-overlay.open{display:flex;}
 .timer-modal{background:white;border-radius:var(--radius-xl);padding:40px 48px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.25);min-width:340px;position:relative;animation:popIn 0.25s ease;}
@@ -218,8 +179,6 @@ input,select,textarea{font-family:var(--font-main);}
 .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:299;overflow:hidden;}
 .confetti-piece{position:absolute;width:10px;height:10px;top:-20px;border-radius:2px;animation:confettiFall linear forwards;}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-/* 班級主色 */
 [data-class="c1"] #class-page{background:var(--c1-light);}
 [data-class="c1"] .topnav{border-bottom:3px solid var(--c1-tag);}
 [data-class="c1"] .nav-tab.active,[data-class="c1"] .tab-switch-btn.active,[data-class="c1"] .n-btn.selected,[data-class="c1"] .random-go-btn,[data-class="c1"] .add-btn,[data-class="c1"] .timer-start-btn,[data-class="c1"] .timer-fab,[data-class="c1"] .timer-done-close,[data-class="c1"] .topic-add-btn{background:var(--c1-primary);}
@@ -229,8 +188,6 @@ input,select,textarea{font-family:var(--font-main);}
 [data-class="c1"] .rank-bar{background:var(--c1-mid);color:var(--c1-dark);}
 [data-class="c1"] .group-card{border-top:3px solid var(--c1-primary);}
 [data-class="c1"] .publisher-btn{background:var(--c1-light);color:var(--c1-dark);}
-[data-class="c1"] .topic-select:focus{border-color:var(--c1-primary);}
-
 [data-class="c2"] #class-page{background:var(--c2-light);}
 [data-class="c2"] .topnav{border-bottom:3px solid var(--c2-tag);}
 [data-class="c2"] .nav-tab.active,[data-class="c2"] .tab-switch-btn.active,[data-class="c2"] .n-btn.selected,[data-class="c2"] .random-go-btn,[data-class="c2"] .add-btn,[data-class="c2"] .timer-start-btn,[data-class="c2"] .timer-fab,[data-class="c2"] .timer-done-close,[data-class="c2"] .topic-add-btn{background:var(--c2-primary);}
@@ -240,7 +197,6 @@ input,select,textarea{font-family:var(--font-main);}
 [data-class="c2"] .rank-bar{background:var(--c2-mid);color:var(--c2-dark);}
 [data-class="c2"] .group-card{border-top:3px solid var(--c2-primary);}
 [data-class="c2"] .publisher-btn{background:var(--c2-light);color:var(--c2-dark);}
-
 [data-class="c3"] #class-page{background:var(--c3-light);}
 [data-class="c3"] .topnav{border-bottom:3px solid var(--c3-tag);}
 [data-class="c3"] .nav-tab.active,[data-class="c3"] .tab-switch-btn.active,[data-class="c3"] .n-btn.selected,[data-class="c3"] .random-go-btn,[data-class="c3"] .add-btn,[data-class="c3"] .timer-start-btn,[data-class="c3"] .timer-fab,[data-class="c3"] .timer-done-close,[data-class="c3"] .topic-add-btn{background:var(--c3-primary);}
@@ -250,28 +206,14 @@ input,select,textarea{font-family:var(--font-main);}
 [data-class="c3"] .rank-bar{background:var(--c3-mid);color:var(--c3-dark);}
 [data-class="c3"] .group-card{border-top:3px solid var(--c3-primary);}
 [data-class="c3"] .publisher-btn{background:var(--c3-light);color:var(--c3-dark);}
-
 @keyframes popIn{0%{transform:scale(0.92);opacity:0}100%{transform:scale(1);opacity:1}}
 .pop-in{animation:popIn 0.2s ease forwards;}
 @keyframes scoreFlash{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
 .score-flash{animation:scoreFlash 0.25s ease;}
-
-@media(max-width:700px){
-  .home-cards-grid{flex-direction:column;align-items:center;}
-  .home-class-card{width:100%;max-width:320px;}
-  .nav-tabs{gap:3px;}
-  .nav-tab{padding:6px 9px;font-size:0.78rem;}
-  .groups-grid{grid-template-columns:1fr 1fr;}
-  .students-grid{grid-template-columns:1fr 1fr;}
-  .timer-modal{padding:32px 24px;min-width:unset;width:92vw;}
-  .timer-display{font-size:4rem;}
-  .timer-done-box{padding:36px 28px;}
-}
+@media(max-width:700px){.home-cards-grid{flex-direction:column;align-items:center;}.home-class-card{width:100%;max-width:320px;}.nav-tabs{gap:3px;}.nav-tab{padding:6px 9px;font-size:0.78rem;}.groups-grid{grid-template-columns:1fr 1fr;}.students-grid{grid-template-columns:1fr 1fr;}.timer-modal{padding:32px 24px;min-width:unset;width:92vw;}.timer-display{font-size:4rem;}.timer-done-box{padding:36px 28px;}}
 </style>
 </head>
 <body>
-
-<!-- 首頁 -->
 <div id="home-page" class="page active">
   <div class="home-header">
     <span class="logo-emoji">🌱</span>
@@ -279,29 +221,13 @@ input,select,textarea{font-family:var(--font-main);}
     <p>老師的好夥伴，讓每一堂課都溫暖又有趣 ✨</p>
   </div>
   <div class="home-cards-grid">
-    <div class="home-class-card c1" onclick="enterClass('c1')">
-      <span class="card-emoji">🗺️</span>
-      <div class="card-name">三年甲班社會</div>
-      <div class="card-desc">認識家鄉與社區<br>一起探索生活世界</div>
-      <button class="enter-btn">進入課堂 →</button>
-    </div>
-    <div class="home-class-card c2" onclick="enterClass('c2')">
-      <span class="card-emoji">🌏</span>
-      <div class="card-name">四年甲班社會</div>
-      <div class="card-desc">認識臺灣與地理<br>培養公民意識</div>
-      <button class="enter-btn">進入課堂 →</button>
-    </div>
-    <div class="home-class-card c3" onclick="enterClass('c3')">
-      <span class="card-emoji">🔬</span>
-      <div class="card-name">四年甲班自然</div>
-      <div class="card-desc">探索自然與科學<br>動手做實驗</div>
-      <button class="enter-btn">進入課堂 →</button>
-    </div>
+    <div class="home-class-card c1" onclick="enterClass('c1')"><span class="card-emoji">🗺️</span><div class="card-name">三年甲班社會</div><div class="card-desc">認識家鄉與社區<br>一起探索生活世界</div><button class="enter-btn">進入課堂 →</button></div>
+    <div class="home-class-card c2" onclick="enterClass('c2')"><span class="card-emoji">🌏</span><div class="card-name">四年甲班社會</div><div class="card-desc">認識臺灣與地理<br>培養公民意識</div><button class="enter-btn">進入課堂 →</button></div>
+    <div class="home-class-card c3" onclick="enterClass('c3')"><span class="card-emoji">🔬</span><div class="card-name">四年甲班自然</div><div class="card-desc">探索自然與科學<br>動手做實驗</div><button class="enter-btn">進入課堂 →</button></div>
   </div>
-  <div class="home-footer">今天也是美好的一天 🌸 &nbsp;|&nbsp; 課堂小幫手 v4.0</div>
+  <div class="home-footer">今天也是美好的一天 🌸 &nbsp;|&nbsp; 課堂小幫手 v5.0</div>
 </div>
 
-<!-- 班級頁面 -->
 <div id="class-page" class="page">
   <div class="topnav">
     <div class="nav-left">
@@ -318,37 +244,20 @@ input,select,textarea{font-family:var(--font-main);}
       <button class="nav-tab" onclick="switchTab('summary',this)">📊 成績統計</button>
     </div>
   </div>
-
   <div class="class-content">
-
-    <!-- 班級資訊 -->
     <div id="tab-info" class="tab-content">
       <div id="class-header-bar" class="class-header-bar" data-emoji="">
-        <div class="class-info-item">
-          <label>班級 / 科目</label>
-          <div class="value" id="info-name"></div>
-        </div>
+        <div class="class-info-item"><label>班級 / 科目</label><div class="value" id="info-name"></div></div>
         <div class="class-info-item">
           <label>今日課程主題</label>
-          <!-- 1. 下拉選單 -->
           <div class="topic-select-wrap">
-            <select class="topic-select" id="topic-select" onchange="onTopicSelect()">
-              <option value="">── 請選擇主題 ──</option>
-            </select>
+            <select class="topic-select" id="topic-select" onchange="onTopicSelect()"><option value="">── 請選擇主題 ──</option></select>
             <button class="topic-manage-btn" onclick="openTopicModal()">✏️ 管理主題</button>
           </div>
           <div class="value-hint">可在「管理主題」預先輸入清單</div>
         </div>
-        <div class="class-info-item">
-          <label>老師備註 ✏️</label>
-          <div class="value" id="info-note" title="點擊可編輯" onclick="editInfoField('note')" style="cursor:pointer;border-bottom:2px dashed transparent;" onmouseover="this.style.borderBottomColor='#ccc'" onmouseout="this.style.borderBottomColor='transparent'"></div>
-          <div class="value-hint">點擊可修改</div>
-        </div>
-        <div class="class-info-item">
-          <label>今日鼓勵語 ✏️</label>
-          <div class="encourage-tag" id="info-encourage" title="點擊可編輯" onclick="editInfoField('encourage')" style="cursor:pointer;"></div>
-          <div class="value-hint" style="margin-top:6px;">點擊可修改</div>
-        </div>
+        <div class="class-info-item"><label>老師備註 ✏️</label><div class="value" id="info-note" onclick="editInfoField('note')" style="cursor:pointer;border-bottom:2px dashed transparent;" onmouseover="this.style.borderBottomColor='#ccc'" onmouseout="this.style.borderBottomColor='transparent'"></div><div class="value-hint">點擊可修改</div></div>
+        <div class="class-info-item"><label>今日鼓勵語 ✏️</label><div class="encourage-tag" id="info-encourage" onclick="editInfoField('encourage')" style="cursor:pointer;"></div><div class="value-hint" style="margin-top:6px;">點擊可修改</div></div>
       </div>
       <div class="card" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
         <span style="font-weight:700;color:#7a6a5a;">快速前往：</span>
@@ -360,8 +269,6 @@ input,select,textarea{font-family:var(--font-main);}
         <button class="tab-switch-btn" style="background:#fce4ec;color:#c62828;" onclick="resetAllScores()">🗑️ 清除所有分數</button>
       </div>
     </div>
-
-    <!-- 教材資源 -->
     <div id="tab-material" class="tab-content hidden">
       <div class="card">
         <div class="section-title">📚 教材出版社連結</div>
@@ -370,11 +277,8 @@ input,select,textarea{font-family:var(--font-main);}
           <button class="publisher-btn" onclick="openPublisher('kangxuan')"><span class="pub-emoji">📘</span><span>康軒</span><span style="font-size:0.75rem;opacity:0.7;">點擊前往</span></button>
           <button class="publisher-btn" onclick="openPublisher('nanyi')"><span class="pub-emoji">📙</span><span>南一</span><span style="font-size:0.75rem;opacity:0.7;">點擊前往</span></button>
         </div>
-        <p style="margin-top:18px;font-size:0.82rem;color:#aaa;">※ 目前為示意連結，可日後替換</p>
       </div>
     </div>
-
-    <!-- 分組管理 -->
     <div id="tab-group" class="tab-content hidden">
       <div class="tab-switcher">
         <button class="tab-switch-btn active" id="fixed-tab-btn" onclick="switchGroupMode('fixed',this)">📌 固定分組</button>
@@ -404,8 +308,6 @@ input,select,textarea{font-family:var(--font-main);}
         <div class="groups-grid" id="random-groups-container"></div>
       </div>
     </div>
-
-    <!-- 學生分數 -->
     <div id="tab-student" class="tab-content hidden">
       <div class="students-header">
         <span class="section-title" style="margin-bottom:0">⭐ 學生個人分數</span>
@@ -419,8 +321,6 @@ input,select,textarea{font-family:var(--font-main);}
         <button class="add-btn" onclick="addStudent()">新增</button>
       </div>
     </div>
-
-    <!-- 2. 今日提醒（可編輯） -->
     <div id="tab-reminder" class="tab-content hidden">
       <div class="card">
         <div class="section-title">📌 今日課堂小提醒</div>
@@ -436,8 +336,6 @@ input,select,textarea{font-family:var(--font-main);}
         </div>
       </div>
     </div>
-
-    <!-- 5. 輪流發言 -->
     <div id="tab-speaker" class="tab-content hidden">
       <div class="card">
         <div class="section-title">🙋 輪流發言紀錄</div>
@@ -449,32 +347,24 @@ input,select,textarea{font-family:var(--font-main);}
         </div>
       </div>
     </div>
-
-    <!-- 4. 成績統計（社會＋自然合計） -->
     <div id="tab-summary" class="tab-content hidden">
-      <div class="summary-card" id="summary-group-card">
+      <div class="summary-card">
         <div class="summary-title">📊 四年甲班小組累積分數（社會＋自然）</div>
         <table class="summary-table" id="summary-group-table"></table>
       </div>
-      <div class="summary-card" id="summary-student-card">
+      <div class="summary-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div class="summary-title" style="margin-bottom:0">📋 四年甲班個人累積分數</div>
-          <!-- 3. 匯出 Excel 按鈕 -->
-          <button class="add-btn" onclick="exportExcel('c2')" style="font-size:0.88rem;padding:8px 18px;">⬇️ 匯出社會成績 Excel</button>
-          <button class="add-btn" onclick="exportExcel('c3')" style="font-size:0.88rem;padding:8px 18px;background:#5da8c4;">⬇️ 匯出自然成績 Excel</button>
+          <button class="add-btn" onclick="exportExcel('c2')" style="font-size:0.88rem;padding:8px 18px;">⬇️ 匯出社會成績</button>
+          <button class="add-btn" onclick="exportExcel('c3')" style="font-size:0.88rem;padding:8px 18px;background:#5da8c4;">⬇️ 匯出自然成績</button>
         </div>
         <table class="summary-table" id="summary-student-table"></table>
       </div>
-      <p style="font-size:0.8rem;color:#aaa;margin-top:8px;">※ 成績統計僅顯示四年甲班（社會＋自然同一批學生）</p>
     </div>
-
   </div>
 </div>
 
-<!-- 計時器 FAB -->
 <button class="timer-fab hidden" id="timer-fab" onclick="openTimer()">⏱️</button>
-
-<!-- 計時器彈窗 -->
 <div class="timer-overlay" id="timer-overlay" onclick="handleOverlayClick(event)">
   <div class="timer-modal">
     <button class="timer-close-btn" onclick="closeTimer()">✕</button>
@@ -500,10 +390,7 @@ input,select,textarea{font-family:var(--font-main);}
     </div>
   </div>
 </div>
-
-<!-- 彩帶 -->
 <div class="confetti-container" id="confetti-container"></div>
-<!-- 計時完成彈窗 -->
 <div class="timer-done-overlay" id="timer-done-overlay">
   <div class="timer-done-box">
     <span class="timer-done-emoji" id="timer-done-emoji">🎉</span>
@@ -512,8 +399,6 @@ input,select,textarea{font-family:var(--font-main);}
     <button class="timer-done-close" onclick="closeDone()">好的！繼續加油 💪</button>
   </div>
 </div>
-
-<!-- 1. 主題管理彈窗 -->
 <div class="modal-overlay" id="topic-modal" onclick="handleTopicModalClick(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeTopicModal()">✕</button>
@@ -527,141 +412,76 @@ input,select,textarea{font-family:var(--font-main);}
 </div>
 
 <script>
-/* ===================================================
-   資料
-   =================================================== */
-const CLASS_DATA = {
-  c1: {
-    id:'c1', name:'三年甲班社會', emoji:'🗺️',
-    topic:'',
-    topics:['第一單元：認識我的家鄉','第二單元：社區的組成','第三單元：地方特色與文化','第四單元：生活中的規則'],
-    note:'老師備註',
-    encourage:'🌟 認真聽課，大家都很棒！',
+/* ===== 資料 ===== */
+const CLASS_DATA={
+  c1:{id:'c1',name:'三年甲班社會',emoji:'🗺️',topic:'',topics:[],note:'老師備註',encourage:'🌟 認真聽課，大家都很棒！',
     publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
-    reminders:[
-      {icon:'📋',text:'請準備學習單（每人一張）'},
-      {icon:'🗺️',text:'今日需要社區地圖教具'},
-      {icon:'✅',text:'作業收齊後請在名單上打勾'},
-      {icon:'⏰',text:'下課前預留 5 分鐘做分享'},
-    ],
+    reminders:[{icon:'📋',text:'請準備學習單（每人一張）'},{icon:'🗺️',text:'今日需要社區地圖教具'},{icon:'✅',text:'作業收齊後請在名單上打勾'},{icon:'⏰',text:'下課前預留 5 分鐘做分享'}],
     fixedGroups:[{name:'全班',score:0,members:['石勁維','詹杰恩','詹禹楊','陳采平','李若妍','黃品葳','白芯宜']}],
-    students:[
-      {name:'石勁維',group:'全班',score:0},{name:'詹杰恩',group:'全班',score:0},{name:'詹禹楊',group:'全班',score:0},
-      {name:'陳采平',group:'全班',score:0},{name:'李若妍',group:'全班',score:0},{name:'黃品葳',group:'全班',score:0},{name:'白芯宜',group:'全班',score:0},
-    ],
-    studentIds:{石勁維:'',詹杰恩:'',詹禹楊:'',陳采平:'',李若妍:'',黃品葳:'',白芯宜:''},
-  },
-  c2: {
-    id:'c2', name:'四年甲班社會', emoji:'🌏',
-    topic:'',
-    topics:['第一單元：認識臺灣','第二單元：臺灣的地形與河流','第三單元：氣候與生活','第四單元：臺灣的族群與文化'],
-    note:'老師備註',
-    encourage:'🌿 合作最棒，互相幫忙！',
+    students:[{name:'石勁維',group:'全班',score:0},{name:'詹杰恩',group:'全班',score:0},{name:'詹禹楊',group:'全班',score:0},{name:'陳采平',group:'全班',score:0},{name:'李若妍',group:'全班',score:0},{name:'黃品葳',group:'全班',score:0},{name:'白芯宜',group:'全班',score:0}]},
+  c2:{id:'c2',name:'四年甲班社會',emoji:'🌏',topic:'',topics:[],note:'老師備註',encourage:'🌿 合作最棒，互相幫忙！',
     publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
-    reminders:[
-      {icon:'🗺️',text:'需要臺灣地形圖海報'},{icon:'📖',text:'請提醒學生帶課本'},
-      {icon:'✏️',text:'作業今日收'},{icon:'⏰',text:'下課前預留時間複習'},
-    ],
-    fixedGroups:[
-      {name:'A組',score:0,members:['蔡予恩','陳若禾','黃伊浿']},
-      {name:'B組',score:0,members:['黃禹森','都怡安','徐總仟']},
-    ],
-    students:[
-      {name:'蔡予恩',group:'A組',score:0,sid:'111002',seat:1},
-      {name:'黃禹森',group:'B組',score:0,sid:'111003',seat:2},
-      {name:'陳若禾',group:'A組',score:0,sid:'111005',seat:4},
-      {name:'都怡安',group:'B組',score:0,sid:'111006',seat:5},
-      {name:'徐總仟',group:'B組',score:0,sid:'111007',seat:6},
-      {name:'黃伊浿',group:'A組',score:0,sid:'111008',seat:7},
-    ],
-  },
-  c3: {
-    id:'c3', name:'四年甲班自然', emoji:'🔬',
-    topic:'',
-    topics:['第一單元：植物的生長','第二單元：動物的構造','第三單元：物質的變化','第四單元：光的折射與彩虹原理'],
-    note:'老師備註',
-    encourage:'🔭 好奇心是科學家最重要的禮物！',
+    reminders:[{icon:'🗺️',text:'需要臺灣地形圖海報'},{icon:'📖',text:'請提醒學生帶課本'},{icon:'✏️',text:'作業今日收'},{icon:'⏰',text:'下課前預留時間複習'}],
+    fixedGroups:[{name:'A組',score:0,members:['蔡予恩','陳若禾','黃伊浿']},{name:'B組',score:0,members:['黃禹森','都怡安','徐總仟']}],
+    students:[{name:'蔡予恩',group:'A組',score:0,sid:'111002',seat:1},{name:'黃禹森',group:'B組',score:0,sid:'111003',seat:2},{name:'陳若禾',group:'A組',score:0,sid:'111005',seat:4},{name:'都怡安',group:'B組',score:0,sid:'111006',seat:5},{name:'徐總仟',group:'B組',score:0,sid:'111007',seat:6},{name:'黃伊浿',group:'A組',score:0,sid:'111008',seat:7}]},
+  c3:{id:'c3',name:'四年甲班自然',emoji:'🔬',topic:'',topics:[],note:'老師備註',encourage:'🔭 好奇心是科學家最重要的禮物！',
     publishers:{hanlin:'https://www.hanlins.com',kangxuan:'https://www.knsh.com.tw',nanyi:'https://www.nani.com.tw'},
-    reminders:[
-      {icon:'🔬',text:'請提前分發實驗器材'},{icon:'📝',text:'實驗記錄單請發給每位學生'},
-      {icon:'✅',text:'作業收齊後請在名單上打勾'},{icon:'⚠️',text:'提醒學生注意實驗安全'},
-    ],
-    fixedGroups:[
-      {name:'A組',score:0,members:['蔡予恩','陳若禾','黃伊浿']},
-      {name:'B組',score:0,members:['黃禹森','都怡安','徐總仟']},
-    ],
-    students:[
-      {name:'蔡予恩',group:'A組',score:0,sid:'111002',seat:1},
-      {name:'黃禹森',group:'B組',score:0,sid:'111003',seat:2},
-      {name:'陳若禾',group:'A組',score:0,sid:'111005',seat:4},
-      {name:'都怡安',group:'B組',score:0,sid:'111006',seat:5},
-      {name:'徐總仟',group:'B組',score:0,sid:'111007',seat:6},
-      {name:'黃伊浿',group:'A組',score:0,sid:'111008',seat:7},
-    ],
-  }
+    reminders:[{icon:'🔬',text:'請提前分發實驗器材'},{icon:'📝',text:'實驗記錄單請發給每位學生'},{icon:'✅',text:'作業收齊後請在名單上打勾'},{icon:'⚠️',text:'提醒學生注意實驗安全'}],
+    fixedGroups:[{name:'A組',score:0,members:['蔡予恩','陳若禾','黃伊浿']},{name:'B組',score:0,members:['黃禹森','都怡安','徐總仟']}],
+    students:[{name:'蔡予恩',group:'A組',score:0,sid:'111002',seat:1},{name:'黃禹森',group:'B組',score:0,sid:'111003',seat:2},{name:'陳若禾',group:'A組',score:0,sid:'111005',seat:4},{name:'都怡安',group:'B組',score:0,sid:'111006',seat:5},{name:'徐總仟',group:'B組',score:0,sid:'111007',seat:6},{name:'黃伊浿',group:'A組',score:0,sid:'111008',seat:7}]}
 };
+// c2 和 c3 共用同一份固定分組分數
+CLASS_DATA.c3.fixedGroups=CLASS_DATA.c2.fixedGroups;
 
-// 四年甲班社會與自然共用同一份固定分組（分數同步）
-CLASS_DATA.c3.fixedGroups = CLASS_DATA.c2.fixedGroups;
-
-/* 狀態 */
-let currentClass=null, randomGroupN=2, randomGroups=[], randomGroupScores=[], randomGroupNames=[];
-let timerInterval=null, timerRemaining=300, timerRunning=false, timerTotal=300;
+/* ===== 狀態 ===== */
+let currentClass=null,randomGroupN=2,randomGroups=[],randomGroupScores=[],randomGroupNames=[];
+let timerInterval=null,timerRemaining=300,timerRunning=false,timerTotal=300;
 let speakerSpoken=new Set();
 
-/* 頁面切換 */
+/* ===== 頁面切換 ===== */
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goHome(){stopTimer();showPage('home-page');currentClass=null;window.currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
+function goHome(){stopTimer();showPage('home-page');currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
 function enterClass(k){
-  currentClass=k; window.currentClass=k; const d=CLASS_DATA[k];
-  loadTopics(k);
+  currentClass=k;
+  const d=CLASS_DATA[k];
   document.getElementById('class-page').setAttribute('data-class',k);
   document.getElementById('nav-class-label').textContent=d.name;
   document.getElementById('info-name').textContent=d.name;
   document.getElementById('info-note').textContent=d.note;
   document.getElementById('info-encourage').textContent=d.encourage;
   document.getElementById('class-header-bar').setAttribute('data-emoji',d.emoji);
-  renderTopicSelect(); renderFixedGroups(); renderStudents(); renderReminders(); renderSpeaker();
+  renderTopicSelect();renderFixedGroups();renderStudents();renderReminders();renderSpeaker();
   switchTab('info',getNavTab(1));
   switchGroupMode('fixed',document.getElementById('fixed-tab-btn'));
   document.getElementById('timer-fab').classList.remove('hidden');
   showPage('class-page');
-  // Firebase 讀取需要時間，1秒後再更新一次下拉選單
-  setTimeout(()=>{ if(currentClass===k) renderTopicSelect(); }, 1000);
-  setTimeout(()=>{ if(currentClass===k) renderTopicSelect(); }, 3000);
 }
 function getNavTab(n){return document.querySelector(`.nav-tab:nth-child(${n})`);}
 function switchTab(id,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));
   document.getElementById('tab-'+id).classList.remove('hidden');
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  if(id==='summary') renderSummary();
+  if(btn)btn.classList.add('active');
+  if(id==='summary')renderSummary();
 }
 
-/* 教材 */
+/* ===== 教材 ===== */
 function openPublisher(pub){const url=CLASS_DATA[currentClass]?.publishers[pub];if(url&&url!=='#')window.open(url,'_blank');}
 
-/* 1. 課程主題下拉選單 */
+/* ===== 課程主題 ===== */
 function renderTopicSelect(){
   const d=CLASS_DATA[currentClass];
   const sel=document.getElementById('topic-select');
   sel.innerHTML='<option value="">── 請選擇主題 ──</option>';
   d.topics.forEach(t=>{
     const opt=document.createElement('option');
-    opt.value=t; opt.textContent=t;
-    if(t===d.topic) opt.selected=true;
+    opt.value=t;opt.textContent=t;
+    if(t===d.topic)opt.selected=true;
     sel.appendChild(opt);
   });
 }
-function onTopicSelect(){
-  const val=document.getElementById('topic-select').value;
-  CLASS_DATA[currentClass].topic=val;
-}
-function openTopicModal(){
-  renderTopicList();
-  document.getElementById('topic-modal').classList.add('open');
-}
+function onTopicSelect(){CLASS_DATA[currentClass].topic=document.getElementById('topic-select').value;}
+function openTopicModal(){renderTopicList();document.getElementById('topic-modal').classList.add('open');}
 function closeTopicModal(){document.getElementById('topic-modal').classList.remove('open');renderTopicSelect();}
 function handleTopicModalClick(e){if(e.target===document.getElementById('topic-modal'))closeTopicModal();}
 function renderTopicList(){
@@ -670,8 +490,7 @@ function renderTopicList(){
   list.innerHTML='';
   if(d.topics.length===0){list.innerHTML='<div style="color:#bbb;font-size:0.85rem;padding:8px;">尚未新增主題</div>';return;}
   d.topics.forEach((t,idx)=>{
-    const item=document.createElement('div');
-    item.className='topic-item';
+    const item=document.createElement('div');item.className='topic-item';
     item.innerHTML=`<span>${t}</span><button onclick="deleteTopic(${idx})">✕</button>`;
     list.appendChild(item);
   });
@@ -679,92 +498,43 @@ function renderTopicList(){
 function addTopic(){
   const input=document.getElementById('topic-add-input');
   const val=input.value.trim();
-  if(!val) return;
+  if(!val)return;
   CLASS_DATA[currentClass].topics.push(val);
   input.value='';
   renderTopicList();
   renderTopicSelect();
-  saveTopics(currentClass);
+  fbSaveTopics(currentClass);
 }
 function deleteTopic(idx){
   CLASS_DATA[currentClass].topics.splice(idx,1);
-  renderTopicList(); renderTopicSelect();
-  saveTopics(currentClass);
+  renderTopicList();renderTopicSelect();
+  fbSaveTopics(currentClass);
 }
-function saveTopics(ck){
-  if(!window._fbReady){
-    // Firebase 還沒準備好，等 500ms 再試
-    setTimeout(()=>saveTopics(ck), 500);
-    return;
-  }
-  window._fbSet(window._fbRef(window._fbDb, ck+'/topicList'), CLASS_DATA[ck].topics.join('||'));
-}
-function loadTopicsFromFirebase(ck, data){
-  if(!data) return;
-  // 讀取字串格式
-  const arr = data.split('||').filter(t=>t.trim()!=='');
-  if(arr.length>0){
-    CLASS_DATA[ck].topics=arr;
-    if(window.currentClass===ck) renderTopicSelect();
-  }
-}
-function loadTopics(ck){}
-window.loadTopicsFromFirebase = loadTopicsFromFirebase;
 
-window.renderTopicSelect = function(ck){ if(currentClass===ck) renderTopicSelect(); };
-window.updateLeaderBar = function(ck){ if(currentClass===ck) updateLeaderBar(); };
-window.currentClass = null;
-
-/* 備註/鼓勵語編輯 */
+/* ===== 備註/鼓勵語 ===== */
 function editInfoField(field){
   const d=CLASS_DATA[currentClass];
-  if(field==='note'){
-    const el=document.getElementById('info-note');
-    if(el.querySelector('input')) return;
-    const cur=d.note;
-    const inp=document.createElement('input');
-    inp.className='info-edit-input'; inp.value=cur; inp.maxLength=60;
-    el.innerHTML=''; el.appendChild(inp); inp.focus(); inp.select();
-    const save=()=>{d.note=inp.value.trim()||cur;el.textContent=d.note;};
-    inp.addEventListener('blur',save);
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=cur;inp.blur();}});
-  }
-  if(field==='encourage'){
-    const el=document.getElementById('info-encourage');
-    if(el.querySelector('input')) return;
-    const cur=d.encourage;
-    const inp=document.createElement('input');
-    inp.className='info-edit-input'; inp.value=cur; inp.maxLength=30; inp.style.borderRadius='50px';
-    el.innerHTML=''; el.appendChild(inp); inp.focus(); inp.select();
-    const save=()=>{d.encourage=inp.value.trim()||cur;el.textContent=d.encourage;};
-    inp.addEventListener('blur',save);
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=cur;inp.blur();}});
-  }
+  const elId=field==='encourage'?'info-encourage':'info-'+field;
+  const el=document.getElementById(elId);
+  if(el.querySelector('input'))return;
+  const cur=field==='encourage'?d.encourage:d[field];
+  const inp=document.createElement('input');
+  inp.className='info-edit-input';inp.value=cur;inp.maxLength=field==='encourage'?30:60;
+  if(field==='encourage')inp.style.borderRadius='50px';
+  el.innerHTML='';el.appendChild(inp);inp.focus();inp.select();
+  const save=()=>{const n=inp.value.trim()||cur;if(field==='encourage')d.encourage=n;else d[field]=n;el.textContent=n;};
+  inp.addEventListener('blur',save);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=cur;inp.blur();}});
 }
 
-/* 固定分組 */
+/* ===== 固定分組 ===== */
 function renderFixedGroups(){
   const d=CLASS_DATA[currentClass];
   const c=document.getElementById('fixed-groups-container');
-  c.innerHTML=''; updateLeaderBar(); updateGroupCountHint();
+  c.innerHTML='';updateLeaderBar();updateGroupCountHint();
   d.fixedGroups.forEach((g,idx)=>{
-    const card=document.createElement('div');
-    card.className='group-card pop-in';
-    card.innerHTML=`
-      <div class="group-card-header">
-        <span class="group-name" title="點兩下編輯" ondblclick="editGroupName(this,'fixed',${idx})">${g.name}</span>
-        <span style="font-size:0.78rem;opacity:0.45;">固定組</span>
-      </div>
-      <div class="group-score-display" id="fg-score-${currentClass}-${idx}">${g.score}</div>
-      <div class="group-members">${g.members.map(m=>'👤 '+m).join('　')}</div>
-      <div class="score-btns">
-        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},5)">+5</button>
-        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},2)">+2</button>
-        <button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},1)">+1</button>
-        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-1)">-1</button>
-        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-2)">-2</button>
-        <button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-5)">-5</button>
-      </div>`;
+    const card=document.createElement('div');card.className='group-card pop-in';
+    card.innerHTML=`<div class="group-card-header"><span class="group-name" title="點兩下編輯" ondblclick="editGroupName(this,'fixed',${idx})">${g.name}</span><span style="font-size:0.78rem;opacity:0.45;">固定組</span></div><div class="group-score-display" id="fg-score-${currentClass}-${idx}">${g.score}</div><div class="group-members">${g.members.map(m=>'👤 '+m).join('　')}</div><div class="score-btns"><button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},5)">+5</button><button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},2)">+2</button><button class="score-btn plus" onclick="fixedGroupScore('${currentClass}',${idx},1)">+1</button><button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-1)">-1</button><button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-2)">-2</button><button class="score-btn minus" onclick="fixedGroupScore('${currentClass}',${idx},-5)">-5</button></div>`;
     c.appendChild(card);
   });
 }
@@ -778,14 +548,22 @@ function editGroupName(el,type,idx){
   const save=()=>{const n=inp.value.trim()||cur;if(type==='fixed'){CLASS_DATA[currentClass].fixedGroups[idx].name=n;CLASS_DATA[currentClass].students.forEach(s=>{if(s.group===cur)s.group=n;});renderFixedGroups();renderStudents();updateLeaderBar();}else{randomGroupNames[idx]=n;renderRandomGroups();}};
   inp.addEventListener('blur',save);inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=cur;inp.blur();}});
 }
-function fixedGroupScore(ck,idx,delta){const g=CLASS_DATA[ck].fixedGroups[idx];g.score=Math.max(0,g.score+delta);flashScore(`fg-score-${ck}-${idx}`,g.score);updateLeaderBar();saveGroupScore(ck,idx,g.score);}
+function fixedGroupScore(ck,idx,delta){
+  const g=CLASS_DATA[ck].fixedGroups[idx];g.score=Math.max(0,g.score+delta);
+  flashScore(`fg-score-${ck}-${idx}`,g.score);
+  // c2 和 c3 共用，兩邊都更新畫面
+  if(ck==='c2'){const e3=document.getElementById(`fg-score-c3-${idx}`);if(e3){e3.textContent=g.score;}}
+  if(ck==='c3'){const e2=document.getElementById(`fg-score-c2-${idx}`);if(e2){e2.textContent=g.score;}}
+  updateLeaderBar();
+  fbSaveGroupScore(ck,idx,g.score);
+}
 function updateLeaderBar(){const d=CLASS_DATA[currentClass];if(!d)return;const s=[...d.fixedGroups].sort((a,b)=>b.score-a.score);const el=document.getElementById('rank-leader');if(el)el.textContent=`${s[0].name}（${s[0].score} 分）🎉`;}
 
-/* 隨機分組 */
+/* ===== 隨機分組 ===== */
 const RG_EMOJIS=['🔴','🔵','🟢','🟡'];
 function selectN(n,btn){randomGroupN=n;document.querySelectorAll('.n-btn').forEach(b=>b.classList.remove('selected'));if(btn)btn.classList.add('selected');}
 function doRandomGroup(){
-  const d=CLASS_DATA[currentClass];const sts=d.students.map(s=>s.name);
+  const sts=CLASS_DATA[currentClass].students.map(s=>s.name);
   for(let i=sts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sts[i],sts[j]]=[sts[j],sts[i]];}
   randomGroups=Array.from({length:randomGroupN},()=>[]);randomGroupScores=Array(randomGroupN).fill(0);
   randomGroupNames=['紅隊','藍隊','綠隊','黃隊'].slice(0,randomGroupN);
@@ -806,12 +584,11 @@ function switchGroupMode(mode,btn){
   else{document.getElementById('fixed-group-area').classList.add('hidden');document.getElementById('random-group-area').classList.remove('hidden');if(randomGroups.length===0)doRandomGroup();}
 }
 
-/* 學生 */
+/* ===== 學生 ===== */
 function renderStudents(){
   const d=CLASS_DATA[currentClass];const c=document.getElementById('students-container');c.innerHTML='';
   document.getElementById('student-count-label').textContent=`共 ${d.students.length} 位學生`;
-  const sel=document.getElementById('new-student-group');
-  sel.innerHTML=d.fixedGroups.map(g=>`<option value="${g.name}">${g.name}</option>`).join('');
+  const sel=document.getElementById('new-student-group');sel.innerHTML=d.fixedGroups.map(g=>`<option value="${g.name}">${g.name}</option>`).join('');
   d.students.forEach((stu,idx)=>{
     const card=document.createElement('div');card.className='student-card pop-in';
     const opts=d.fixedGroups.map(g=>`<option value="${g.name}"${g.name===stu.group?' selected':''}>${g.name}</option>`).join('');
@@ -826,7 +603,7 @@ function editStudentName(el,idx){
   const save=()=>{const n=inp.value.trim()||cur;d.students[idx].name=n;d.fixedGroups.forEach(g=>{const mi=g.members.indexOf(cur);if(mi!==-1)g.members[mi]=n;});renderStudents();renderFixedGroups();};
   inp.addEventListener('blur',save);inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();if(e.key==='Escape'){inp.value=cur;inp.blur();}});
 }
-function studentScore(ck,idx,delta){const s=CLASS_DATA[ck].students[idx];s.score=Math.max(0,s.score+delta);flashScore(`stu-score-${ck}-${idx}`,s.score);saveStudentScore(ck,idx,s.score);}
+function studentScore(ck,idx,delta){const s=CLASS_DATA[ck].students[idx];s.score=Math.max(0,s.score+delta);flashScore(`stu-score-${ck}-${idx}`,s.score);fbSaveStudentScore(ck,idx,s.score);}
 function changeStudentGroup(ck,idx,ng){
   const d=CLASS_DATA[ck];const s=d.students[idx];s.group=ng;
   d.fixedGroups.forEach(g=>{const mi=g.members.indexOf(s.name);if(mi!==-1)g.members.splice(mi,1);});
@@ -840,7 +617,7 @@ function addStudent(){
 }
 function deleteStudent(idx){const n=CLASS_DATA[currentClass].students[idx].name;if(!confirm(`確定刪除「${n}」嗎？`))return;CLASS_DATA[currentClass].students.splice(idx,1);renderStudents();}
 
-/* 2. 今日提醒（可新增刪除） */
+/* ===== 今日提醒 ===== */
 function renderReminders(){
   const d=CLASS_DATA[currentClass];const list=document.getElementById('reminder-list');list.innerHTML='';
   d.reminders.forEach((r,idx)=>{
@@ -850,30 +627,22 @@ function renderReminders(){
   });
 }
 function addReminder(){
-  const icon=document.getElementById('reminder-icon-sel').value;
-  const text=document.getElementById('reminder-text-input').value.trim();
-  if(!text) return;
-  CLASS_DATA[currentClass].reminders.push({icon,text});
-  document.getElementById('reminder-text-input').value='';
-  renderReminders();
+  const icon=document.getElementById('reminder-icon-sel').value;const text=document.getElementById('reminder-text-input').value.trim();
+  if(!text)return;CLASS_DATA[currentClass].reminders.push({icon,text});document.getElementById('reminder-text-input').value='';renderReminders();
 }
 function deleteReminder(idx){CLASS_DATA[currentClass].reminders.splice(idx,1);renderReminders();}
 
-/* 5. 輪流發言 */
+/* ===== 輪流發言 ===== */
 function renderSpeaker(){
-  const d=CLASS_DATA[currentClass];
-  speakerSpoken=new Set();
+  const d=CLASS_DATA[currentClass];speakerSpoken=new Set();
   const grid=document.getElementById('speaker-grid');grid.innerHTML='';
   d.students.forEach((s,idx)=>{
     const card=document.createElement('div');card.className='speaker-card pop-in';
-    card.id=`spk-${idx}`;
     card.innerHTML=`<span class="speaker-check">🙋</span><div class="speaker-name">${s.name}</div>`;
-    card.onclick=()=>toggleSpoken(idx,s.name,card);
-    grid.appendChild(card);
-  });
-  updateSpeakerCount();
+    card.onclick=()=>toggleSpoken(idx,card);grid.appendChild(card);
+  });updateSpeakerCount();
 }
-function toggleSpoken(idx,name,card){
+function toggleSpoken(idx,card){
   if(speakerSpoken.has(idx)){speakerSpoken.delete(idx);card.classList.remove('spoken');card.querySelector('.speaker-check').textContent='🙋';}
   else{speakerSpoken.add(idx);card.classList.add('spoken');card.querySelector('.speaker-check').textContent='✅';}
   updateSpeakerCount();
@@ -881,55 +650,37 @@ function toggleSpoken(idx,name,card){
 function updateSpeakerCount(){
   const total=CLASS_DATA[currentClass].students.length;const done=speakerSpoken.size;const left=total-done;
   document.getElementById('speaker-count').textContent=`已發言 ${done} 人 ／ 還有 ${left} 人`;
-  document.getElementById('speaker-hint').textContent=left===0?'🎉 全班都發言過了！':left<=3?`⚠️ 快點到以下同學：還有 ${left} 人未發言`:'點擊學生卡片標記已發言';
+  document.getElementById('speaker-hint').textContent=left===0?'🎉 全班都發言過了！':left<=3?`⚠️ 還有 ${left} 人未發言`:'點擊學生卡片標記已發言';
 }
 function resetSpeaker(){speakerSpoken.clear();renderSpeaker();}
 
-/* 4. 成績統計 */
+/* ===== 成績統計 ===== */
 function renderSummary(){
-  // 小組統計（社會 c2 + 自然 c3）
-  const c2=CLASS_DATA.c2;const c3=CLASS_DATA.c3;
-  const groupTable=document.getElementById('summary-group-table');
-  groupTable.innerHTML=`<thead><tr><th>組別</th><th>社會分數</th><th>自然分數</th><th class="total-col">合計</th></tr></thead>`;
-  const tbody=document.createElement('tbody');
+  const c2=CLASS_DATA.c2,c3=CLASS_DATA.c3;
+  const gt=document.getElementById('summary-group-table');
+  gt.innerHTML='<thead><tr><th>組別</th><th>社會分數</th><th>自然分數</th><th class="total-col">合計</th></tr></thead>';
+  const gb=document.createElement('tbody');
   c2.fixedGroups.forEach((g,idx)=>{
-    const c3g=c3.fixedGroups[idx];const c3score=c3g?c3g.score:0;const total=g.score+c3score;
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td><strong>${g.name}</strong></td><td>${g.score}</td><td>${c3score}</td><td class="total-col" style="color:var(--c2-primary)">${total}</td>`;
-    tbody.appendChild(tr);
-  });
-  groupTable.appendChild(tbody);
-
-  // 個人統計
-  const stuTable=document.getElementById('summary-student-table');
-  stuTable.innerHTML=`<thead><tr><th>座號</th><th>姓名</th><th>組別</th><th>社會分數</th><th>自然分數</th><th class="total-col">合計</th></tr></thead>`;
-  const stbody=document.createElement('tbody');
+    const c3g=c3.fixedGroups[idx];const c3s=c3g?c3g.score:0;
+    const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${g.name}</strong></td><td>${g.score}</td><td>${c3s}</td><td class="total-col" style="color:var(--c2-primary)">${g.score+c3s}</td>`;gb.appendChild(tr);
+  });gt.appendChild(gb);
+  const st=document.getElementById('summary-student-table');
+  st.innerHTML='<thead><tr><th>座號</th><th>姓名</th><th>組別</th><th>社會分數</th><th>自然分數</th><th class="total-col">合計</th></tr></thead>';
+  const sb=document.createElement('tbody');
   c2.students.forEach((s,idx)=>{
-    const c3s=c3.students[idx];const c3score=c3s?c3s.score:0;const total=s.score+c3score;
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${s.seat||idx+1}</td><td><strong>${s.name}</strong></td><td>${s.group}</td><td>${s.score}</td><td>${c3score}</td><td class="total-col" style="color:var(--c2-primary)">${total}</td>`;
-    stbody.appendChild(tr);
-  });
-  stuTable.appendChild(stbody);
+    const c3s=c3.students[idx]?c3.students[idx].score:0;
+    const tr=document.createElement('tr');tr.innerHTML=`<td>${s.seat||idx+1}</td><td><strong>${s.name}</strong></td><td>${s.group}</td><td>${s.score}</td><td>${c3s}</td><td class="total-col" style="color:var(--c2-primary)">${s.score+c3s}</td>`;sb.appendChild(tr);
+  });st.appendChild(sb);
 }
 
-/* 3. 匯出 Excel（純 CSV 轉換，不需外部套件） */
-function exportExcel(classKey){
-  const d=CLASS_DATA[classKey];
-  const subjectName=d.name;
-  let csv='\uFEFF'; // BOM for UTF-8
-  csv+=`學號,座號,姓名,定期評量,平時成績\n`;
-  const sorted=[...d.students].sort((a,b)=>(a.seat||0)-(b.seat||0));
-  sorted.forEach(s=>{
-    csv+=`${s.sid||''},${s.seat||''},${s.name},,${s.score}\n`;
-  });
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=`${subjectName}平時成績.csv`;a.click();
-  URL.revokeObjectURL(url);
+/* ===== 匯出 CSV ===== */
+function exportExcel(ck){
+  const d=CLASS_DATA[ck];let csv='\uFEFF學號,座號,姓名,定期評量,平時成績\n';
+  [...d.students].sort((a,b)=>(a.seat||0)-(b.seat||0)).forEach(s=>{csv+=`${s.sid||''},${s.seat||''},${s.name},,${s.score}\n`;});
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`${d.name}平時成績.csv`;a.click();
 }
 
-/* 計時器 */
+/* ===== 計時器 ===== */
 function openTimer(){document.getElementById('timer-overlay').classList.add('open');if(!timerRunning)syncDisplayFromInputs();}
 function closeTimer(){document.getElementById('timer-overlay').classList.remove('open');}
 function handleOverlayClick(e){if(e.target===document.getElementById('timer-overlay'))closeTimer();}
@@ -958,123 +709,72 @@ function timerFinished(){
 function closeDone(){document.getElementById('timer-done-overlay').classList.remove('show');document.getElementById('confetti-container').innerHTML='';}
 function playCuteFinishSound(){
   try{const ctx=new(window.AudioContext||window.webkitAudioContext)();
-  const melody=[{f:523,t:0,d:0.18},{f:523,t:0.18,d:0.18},{f:784,t:0.36,d:0.18},{f:784,t:0.54,d:0.18},{f:880,t:0.72,d:0.18},{f:880,t:0.90,d:0.18},{f:784,t:1.08,d:0.32},{f:659,t:1.50,d:0.18},{f:659,t:1.68,d:0.18},{f:587,t:1.86,d:0.18},{f:587,t:2.04,d:0.18},{f:523,t:2.22,d:0.36},{f:523,t:2.70,d:0.5,chord:true},{f:659,t:2.70,d:0.5,chord:true},{f:784,t:2.70,d:0.5,chord:true},{f:1047,t:2.70,d:0.5,chord:true}];
-  melody.forEach(n=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=n.f;o.connect(g);g.connect(ctx.destination);const v=n.chord?0.12:0.22;g.gain.setValueAtTime(0,ctx.currentTime+n.t);g.gain.linearRampToValueAtTime(v,ctx.currentTime+n.t+0.02);g.gain.setValueAtTime(v,ctx.currentTime+n.t+n.d-0.04);g.gain.linearRampToValueAtTime(0,ctx.currentTime+n.t+n.d);o.start(ctx.currentTime+n.t);o.stop(ctx.currentTime+n.t+n.d+0.05);});}catch(e){}
+  const m=[{f:523,t:0,d:0.18},{f:523,t:0.18,d:0.18},{f:784,t:0.36,d:0.18},{f:784,t:0.54,d:0.18},{f:880,t:0.72,d:0.18},{f:880,t:0.90,d:0.18},{f:784,t:1.08,d:0.32},{f:659,t:1.50,d:0.18},{f:659,t:1.68,d:0.18},{f:587,t:1.86,d:0.18},{f:587,t:2.04,d:0.18},{f:523,t:2.22,d:0.36},{f:523,t:2.70,d:0.5,c:true},{f:659,t:2.70,d:0.5,c:true},{f:784,t:2.70,d:0.5,c:true},{f:1047,t:2.70,d:0.5,c:true}];
+  m.forEach(n=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=n.f;o.connect(g);g.connect(ctx.destination);const v=n.c?0.12:0.22;g.gain.setValueAtTime(0,ctx.currentTime+n.t);g.gain.linearRampToValueAtTime(v,ctx.currentTime+n.t+0.02);g.gain.setValueAtTime(v,ctx.currentTime+n.t+n.d-0.04);g.gain.linearRampToValueAtTime(0,ctx.currentTime+n.t+n.d);o.start(ctx.currentTime+n.t);o.stop(ctx.currentTime+n.t+n.d+0.05);});}catch(e){}
 }
 function spawnConfetti(){
   const c=document.getElementById('confetti-container');c.innerHTML='';
-  const colors=['#e8956d','#f5c4a0','#72b582','#b4dfc0','#5da8c4','#9fd0e4','#f7c948','#f28abf','#a78bfa'];
-  for(let i=0;i<70;i++){const p=document.createElement('div');p.className='confetti-piece';const col=colors[Math.floor(Math.random()*colors.length)];p.style.cssText=`left:${Math.random()*100}%;background:${col};width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;border-radius:${Math.random()>0.5?'2px':'50%'};animation-delay:${Math.random()*1.2}s;animation-duration:${2.5+Math.random()*2}s;`;c.appendChild(p);}
+  const cols=['#e8956d','#f5c4a0','#72b582','#b4dfc0','#5da8c4','#9fd0e4','#f7c948','#f28abf','#a78bfa'];
+  for(let i=0;i<70;i++){const p=document.createElement('div');p.className='confetti-piece';const col=cols[Math.floor(Math.random()*cols.length)];p.style.cssText=`left:${Math.random()*100}%;background:${col};width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;border-radius:${Math.random()>0.5?'2px':'50%'};animation-delay:${Math.random()*1.2}s;animation-duration:${2.5+Math.random()*2}s;`;c.appendChild(p);}
   setTimeout(()=>c.innerHTML='',4000);
 }
-
-/* 分數閃爍 */
 function flashScore(id,val){const el=document.getElementById(id);if(!el)return;el.textContent=val;el.classList.remove('score-flash');void el.offsetWidth;el.classList.add('score-flash');}
-
-function saveGroupScore(ck,idx,score){
-  if(!window._fbDb)return;
-  const saveKey=(ck==='c3')?'c2':ck;
-  window._fbSet(window._fbRef(window._fbDb,saveKey+'/fixedGroups/'+idx+'/score'),score);
-}
-function saveStudentScore(ck,idx,score){
-  if(!window._fbDb)return;
-  window._fbSet(window._fbRef(window._fbDb,ck+'/students/'+idx+'/score'),score);
-}
-function saveTopics(ck){
-  if(!window._fbDb)return;
-  window._fbSet(window._fbRef(window._fbDb,ck+'/topicList'), CLASS_DATA[ck].topics.join('||'));
-}
-function loadTopicsFromFirebase(ck,data){
-  if(!data) return;
-  let arr=[];
-  if(typeof data==='string'){
-    arr=data.split('||').filter(t=>t.trim()!=='');
-  }
-  if(arr.length>0){
-    CLASS_DATA[ck].topics=arr;
-    // 不管現在在哪個頁面，只要是這個班就更新
-    if(currentClass===ck){
-      renderTopicSelect();
-      // 同時更新管理彈窗（如果開著的話）
-      const modal=document.getElementById('topic-modal');
-      if(modal.classList.contains('open')) renderTopicList();
-    }
-  }
-}
-function loadTopics(ck){}
-window.loadTopicsFromFirebase=loadTopicsFromFirebase;
-window.updateLeaderBar=function(ck){if(currentClass===ck)updateLeaderBar();};
-window.currentClass=null;
-
 function resetAllScores(){
   if(!confirm('確定要清除所有班級的分數嗎？\n此操作無法復原。'))return;
-  ['c1','c2','c3'].forEach(ck=>{
-    CLASS_DATA[ck].fixedGroups.forEach((g,idx)=>{g.score=0;saveGroupScore(ck,idx,0);});
-    CLASS_DATA[ck].students.forEach((s,idx)=>{s.score=0;saveStudentScore(ck,idx,0);});
-  });
+  ['c1','c2','c3'].forEach(ck=>{CLASS_DATA[ck].fixedGroups.forEach((g,idx)=>{g.score=0;fbSaveGroupScore(ck,idx,0);});CLASS_DATA[ck].students.forEach((s,idx)=>{s.score=0;fbSaveStudentScore(ck,idx,0);});});
   renderFixedGroups();renderStudents();alert('✅ 所有分數已清除！');
+}
+
+/* ===== Firebase 存取函式（供 module script 設定後呼叫）===== */
+function fbSaveGroupScore(ck,idx,score){
+  if(!window._db)return;
+  const key=(ck==='c3')?'c2':ck;
+  window._set(window._ref(window._db,key+'/fixedGroups/'+idx+'/score'),score);
+}
+function fbSaveStudentScore(ck,idx,score){
+  if(!window._db)return;
+  window._set(window._ref(window._db,ck+'/students/'+idx+'/score'),score);
+}
+function fbSaveTopics(ck){
+  if(!window._db)return;
+  window._set(window._ref(window._db,ck+'/topicList'),CLASS_DATA[ck].topics.join('||'));
 }
 
 ['timer-min-input','timer-sec-input'].forEach(id=>{document.getElementById(id).addEventListener('input',()=>{if(!timerRunning)syncDisplayFromInputs();});});
 </script>
 
-<!-- Firebase 獨立 module script，解決時序問題 -->
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-const app=initializeApp({
-  apiKey:"AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA",
-  authDomain:"classroom-helper-88f09.firebaseapp.com",
-  databaseURL:"https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:"classroom-helper-88f09",
-  storageBucket:"classroom-helper-88f09.firebasestorage.app",
-  messagingSenderId:"679142147221",
-  appId:"1:679142147221:web:a8b4ed5c26fe1b8b23479c"
-});
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getDatabase,ref,set,onValue}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+const app=initializeApp({apiKey:'AIzaSyDTgvorWTr4jsIY5UL5zVrHjpuc2DL--vA',authDomain:'classroom-helper-88f09.firebaseapp.com',databaseURL:'https://classroom-helper-88f09-default-rtdb.asia-southeast1.firebasedatabase.app',projectId:'classroom-helper-88f09',storageBucket:'classroom-helper-88f09.firebasestorage.app',messagingSenderId:'679142147221',appId:'1:679142147221:web:a8b4ed5c26fe1b8b23479c'});
 const db=getDatabase(app);
-window._fbDb=db;
-window._fbRef=ref;
-window._fbSet=set;
+window._db=db; window._ref=ref; window._set=set;
 
-// 固定分組分數（c2 和 c3 共用）
+// 分數
 ['c1','c2'].forEach(ck=>{
   onValue(ref(db,ck+'/fixedGroups'),snap=>{
     const d=snap.val();if(!d)return;
     Object.keys(d).forEach(i=>{
       if(d[i].score!==undefined){
         CLASS_DATA[ck].fixedGroups[i].score=d[i].score;
-        const el2=document.getElementById('fg-score-'+ck+'-'+i);
-        if(el2)el2.textContent=d[i].score;
-        const el3=document.getElementById('fg-score-c3-'+i);
-        if(el3)el3.textContent=d[i].score;
+        ['c2','c3'].forEach(bk=>{const el=document.getElementById('fg-score-'+bk+'-'+i);if(el)el.textContent=d[i].score;});
       }
     });
-    if(window.currentClass===ck||window.currentClass==='c3')window.updateLeaderBar(window.currentClass);
+    if(currentClass===ck||currentClass==='c3')updateLeaderBar();
   });
 });
-
-// 學生個人分數
 ['c1','c2','c3'].forEach(ck=>{
   onValue(ref(db,ck+'/students'),snap=>{
     const d=snap.val();if(!d)return;
-    Object.keys(d).forEach(i=>{
-      if(d[i].score!==undefined){
-        CLASS_DATA[ck].students[i].score=d[i].score;
-        const el=document.getElementById('stu-score-'+ck+'-'+i);
-        if(el)el.textContent=d[i].score;
-      }
-    });
+    Object.keys(d).forEach(i=>{if(d[i].score!==undefined){CLASS_DATA[ck].students[i].score=d[i].score;const el=document.getElementById('stu-score-'+ck+'-'+i);if(el)el.textContent=d[i].score;}});
   });
-
-  // 課程主題清單
+  // 課程主題
   onValue(ref(db,ck+'/topicList'),snap=>{
-    const d=snap.val();
-    if(d){
-      window.loadTopicsFromFirebase(ck,d);
-    }
+    const d=snap.val();if(!d)return;
+    const arr=d.split('||').filter(t=>t.trim()!=='');
+    if(arr.length>0){CLASS_DATA[ck].topics=arr;if(currentClass===ck)renderTopicSelect();}
   });
 });
-
 console.log('✅ Firebase 連線成功！');
 </script>
 </body>
