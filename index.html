@@ -614,7 +614,7 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function goHome(){stopTimer();showPage('home-page');currentClass=null;window.currentClass=null;document.getElementById('class-page').removeAttribute('data-class');document.getElementById('timer-fab').classList.add('hidden');}
 function enterClass(k){
   currentClass=k; window.currentClass=k; const d=CLASS_DATA[k];
-  loadTopics(k);  // 從 localStorage 載入主題
+  loadTopics(k);
   document.getElementById('class-page').setAttribute('data-class',k);
   document.getElementById('nav-class-label').textContent=d.name;
   document.getElementById('info-name').textContent=d.name;
@@ -626,6 +626,9 @@ function enterClass(k){
   switchGroupMode('fixed',document.getElementById('fixed-tab-btn'));
   document.getElementById('timer-fab').classList.remove('hidden');
   showPage('class-page');
+  // Firebase 讀取需要時間，1秒後再更新一次下拉選單
+  setTimeout(()=>{ if(currentClass===k) renderTopicSelect(); }, 1000);
+  setTimeout(()=>{ if(currentClass===k) renderTopicSelect(); }, 3000);
 }
 function getNavTab(n){return document.querySelector(`.nav-tab:nth-child(${n})`);}
 function switchTab(id,btn){
@@ -989,9 +992,12 @@ function loadTopicsFromFirebase(ck,data){
   }
   if(arr.length>0){
     CLASS_DATA[ck].topics=arr;
-    // 如果目前正在這個班級頁面，立即更新下拉選單
+    // 不管現在在哪個頁面，只要是這個班就更新
     if(currentClass===ck){
       renderTopicSelect();
+      // 同時更新管理彈窗（如果開著的話）
+      const modal=document.getElementById('topic-modal');
+      if(modal.classList.contains('open')) renderTopicList();
     }
   }
 }
@@ -1063,7 +1069,9 @@ window._fbSet=set;
   // 課程主題清單
   onValue(ref(db,ck+'/topicList'),snap=>{
     const d=snap.val();
-    if(d) window.loadTopicsFromFirebase(ck,d);
+    if(d){
+      window.loadTopicsFromFirebase(ck,d);
+    }
   });
 });
 
