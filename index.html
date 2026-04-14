@@ -708,9 +708,40 @@ function timerFinished(){
 }
 function closeDone(){document.getElementById('timer-done-overlay').classList.remove('show');document.getElementById('confetti-container').innerHTML='';}
 function playCuteFinishSound(){
-  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();
-  const m=[{f:523,t:0,d:0.18},{f:523,t:0.18,d:0.18},{f:784,t:0.36,d:0.18},{f:784,t:0.54,d:0.18},{f:880,t:0.72,d:0.18},{f:880,t:0.90,d:0.18},{f:784,t:1.08,d:0.32},{f:659,t:1.50,d:0.18},{f:659,t:1.68,d:0.18},{f:587,t:1.86,d:0.18},{f:587,t:2.04,d:0.18},{f:523,t:2.22,d:0.36},{f:523,t:2.70,d:0.5,c:true},{f:659,t:2.70,d:0.5,c:true},{f:784,t:2.70,d:0.5,c:true},{f:1047,t:2.70,d:0.5,c:true}];
-  m.forEach(n=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='triangle';o.frequency.value=n.f;o.connect(g);g.connect(ctx.destination);const v=n.c?0.12:0.22;g.gain.setValueAtTime(0,ctx.currentTime+n.t);g.gain.linearRampToValueAtTime(v,ctx.currentTime+n.t+0.02);g.gain.setValueAtTime(v,ctx.currentTime+n.t+n.d-0.04);g.gain.linearRampToValueAtTime(0,ctx.currentTime+n.t+n.d);o.start(ctx.currentTime+n.t);o.stop(ctx.currentTime+n.t+n.d+0.05);});}catch(e){}
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    // 音樂盒風格：高頻、短促、帶餘韻，像小星星的感覺
+    const notes=[
+      {f:1047,t:0},    // C6
+      {f:1047,t:0.18}, // C6
+      {f:1568,t:0.36}, // G6
+      {f:1568,t:0.54}, // G6
+      {f:1760,t:0.72}, // A6
+      {f:1760,t:0.90}, // A6
+      {f:1568,t:1.08}, // G6 長音
+      {f:1397,t:1.45}, // F6
+      {f:1397,t:1.62}, // F6
+      {f:1319,t:1.80}, // E6
+      {f:1319,t:1.97}, // E6
+      {f:1175,t:2.14}, // D6
+      {f:1175,t:2.31}, // D6
+      {f:1047,t:2.48}, // C6 長音
+    ];
+    notes.forEach((n,i)=>{
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      const dur=i===6||i===13?0.4:0.16; // 長音節拍
+      o.type='sine';
+      o.frequency.value=n.f;
+      o.connect(g);g.connect(ctx.destination);
+      // 音樂盒的特色：快速攻擊、緩慢衰減
+      g.gain.setValueAtTime(0,ctx.currentTime+n.t);
+      g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+n.t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+n.t+dur+0.3);
+      o.start(ctx.currentTime+n.t);
+      o.stop(ctx.currentTime+n.t+dur+0.35);
+    });
+  }catch(e){}
 }
 function spawnConfetti(){
   const c=document.getElementById('confetti-container');c.innerHTML='';
