@@ -708,28 +708,9 @@ function timerFinished(){
 }
 function closeDone(){document.getElementById('timer-done-overlay').classList.remove('show');document.getElementById('confetti-container').innerHTML='';}
 function playCuteFinishSound(){
-  try{
-    const audio = new Audio('https://overpomelo-alt.github.io/classroom-helper/%E6%99%82%E9%96%93%E5%88%B0%E5%9B%89.m4a');
-    audio.volume = 0.7;
-    const playPromise = audio.play();
-    if(playPromise !== undefined){
-      playPromise.catch(()=>{
-        // 瀏覽器封鎖，改用合成音效備用
-        try{
-          const ctx=new(window.AudioContext||window.webkitAudioContext)();
-          const notes=[{f:1047,t:0},{f:1568,t:0.2},{f:1760,t:0.4},{f:1568,t:0.65},{f:1047,t:0.85}];
-          notes.forEach(n=>{
-            const o=ctx.createOscillator();const g=ctx.createGain();
-            o.type='sine';o.frequency.value=n.f;o.connect(g);g.connect(ctx.destination);
-            g.gain.setValueAtTime(0,ctx.currentTime+n.t);
-            g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+n.t+0.01);
-            g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+n.t+0.4);
-            o.start(ctx.currentTime+n.t);o.stop(ctx.currentTime+n.t+0.45);
-          });
-        }catch(e){}
-      });
-    }
-  }catch(e){}
+  const audio=new Audio('https://overpomelo-alt.github.io/classroom-helper/%E6%99%82%E9%96%93%E5%88%B0%E5%9B%89.m4a');
+  audio.volume=0.7;
+  audio.play();
 }
 function spawnConfetti(){
   const c=document.getElementById('confetti-container');c.innerHTML='';
