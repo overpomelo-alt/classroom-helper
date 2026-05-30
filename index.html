@@ -709,38 +709,26 @@ function timerFinished(){
 function closeDone(){document.getElementById('timer-done-overlay').classList.remove('show');document.getElementById('confetti-container').innerHTML='';}
 function playCuteFinishSound(){
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    // 音樂盒風格：高頻、短促、帶餘韻，像小星星的感覺
-    const notes=[
-      {f:1047,t:0},    // C6
-      {f:1047,t:0.18}, // C6
-      {f:1568,t:0.36}, // G6
-      {f:1568,t:0.54}, // G6
-      {f:1760,t:0.72}, // A6
-      {f:1760,t:0.90}, // A6
-      {f:1568,t:1.08}, // G6 長音
-      {f:1397,t:1.45}, // F6
-      {f:1397,t:1.62}, // F6
-      {f:1319,t:1.80}, // E6
-      {f:1319,t:1.97}, // E6
-      {f:1175,t:2.14}, // D6
-      {f:1175,t:2.31}, // D6
-      {f:1047,t:2.48}, // C6 長音
-    ];
-    notes.forEach((n,i)=>{
-      const o=ctx.createOscillator();
-      const g=ctx.createGain();
-      const dur=i===6||i===13?0.4:0.16; // 長音節拍
-      o.type='sine';
-      o.frequency.value=n.f;
-      o.connect(g);g.connect(ctx.destination);
-      // 音樂盒的特色：快速攻擊、緩慢衰減
-      g.gain.setValueAtTime(0,ctx.currentTime+n.t);
-      g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+n.t+0.01);
-      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+n.t+dur+0.3);
-      o.start(ctx.currentTime+n.t);
-      o.stop(ctx.currentTime+n.t+dur+0.35);
-    });
+    const audio = new Audio('https://overpomelo-alt.github.io/classroom-helper/%E6%99%82%E9%96%93%E5%88%B0%E5%9B%89.m4a');
+    audio.volume = 0.7;
+    const playPromise = audio.play();
+    if(playPromise !== undefined){
+      playPromise.catch(()=>{
+        // 瀏覽器封鎖，改用合成音效備用
+        try{
+          const ctx=new(window.AudioContext||window.webkitAudioContext)();
+          const notes=[{f:1047,t:0},{f:1568,t:0.2},{f:1760,t:0.4},{f:1568,t:0.65},{f:1047,t:0.85}];
+          notes.forEach(n=>{
+            const o=ctx.createOscillator();const g=ctx.createGain();
+            o.type='sine';o.frequency.value=n.f;o.connect(g);g.connect(ctx.destination);
+            g.gain.setValueAtTime(0,ctx.currentTime+n.t);
+            g.gain.linearRampToValueAtTime(0.08,ctx.currentTime+n.t+0.01);
+            g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+n.t+0.4);
+            o.start(ctx.currentTime+n.t);o.stop(ctx.currentTime+n.t+0.45);
+          });
+        }catch(e){}
+      });
+    }
   }catch(e){}
 }
 function spawnConfetti(){
