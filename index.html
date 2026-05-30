@@ -212,17 +212,34 @@ input,select,textarea{font-family:var(--font-main);}
 .pop-in{animation:popIn 0.2s ease forwards;}
 @keyframes scoreFlash{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
 .score-flash{animation:scoreFlash 0.25s ease;}
-@media(max-width:700px){.home-cards-grid{flex-direction:column;align-items:center;}.home-class-card{width:100%;max-width:320px;}.nav-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;}.nav-tab{padding:6px 9px;font-size:0.78rem;white-space:nowrap;}.groups-grid{grid-template-columns:1fr 1fr;}.students-grid{grid-template-columns:1fr 1fr;}.timer-modal{padding:32px 24px;min-width:unset;width:92vw;}.timer-display{font-size:4rem;}.timer-done-box{padding:36px 28px;}}
+@media(max-width:700px){
+  .home-cards-grid{flex-direction:column;align-items:center;}
+  .home-class-card{width:100%;max-width:320px;}
+  /* 頂部導覽改成上下兩層：上層返回鍵＋班名，下層可橫滑的分頁列 */
+  .topnav{flex-direction:column;height:auto;padding:8px 12px;gap:8px;align-items:stretch;}
+  .nav-left{justify-content:flex-start;}
+  .nav-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding-bottom:4px;scrollbar-width:thin;}
+  .nav-tab{padding:7px 13px;font-size:0.8rem;white-space:nowrap;flex:0 0 auto;}
+  .groups-grid{grid-template-columns:1fr 1fr;}
+  .students-grid{grid-template-columns:1fr 1fr;}
+  .timer-modal{padding:32px 24px;min-width:unset;width:92vw;}
+  .timer-display{font-size:4rem;}
+  .timer-done-box{padding:36px 28px;}
+}
 @media(max-width:430px){
   .class-content{padding:16px 12px 80px;}
   .class-header-bar{padding:16px 14px;gap:12px;}
+  .class-header-bar::after{display:none;}
   .class-info-item{min-width:unset;flex:1 1 100%;}
   .modal-box{min-width:unset;width:94vw;padding:24px 18px;}
-  .reminder-text-input{min-width:unset;}
-  .reminder-add-row{flex-wrap:nowrap;}
+  .topic-select{max-width:100%;}
+  .topic-select-wrap{width:100%;}
+  .reminder-text-input{min-width:unset;flex:1 1 100%;}
+  .reminder-add-row{flex-wrap:wrap;}
   .publisher-grid{flex-direction:column;}
   .publisher-btn{min-width:unset;}
-  .topnav{padding:0 12px;height:56px;}
+  .add-student-form input,.add-student-form select{flex:1 1 auto;}
+  .group-mgmt-bar,.random-controls{gap:8px;}
 }
 </style>
 </head>
